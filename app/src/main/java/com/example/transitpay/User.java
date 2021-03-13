@@ -6,8 +6,9 @@ public class User {
     PaymentInfo paymentInfo;
 
     public User() {
-
+        // default;
     }
+
 
     public User(String name, String email, String phone, String password) {
         this.name = name;
@@ -16,6 +17,17 @@ public class User {
         this.password = password;
         this.nfcActive = false;
         this.paymentStatus = false;
+    }
+
+    public void copy(User copy) {
+        this.name = copy.getName();
+        this.email = copy.getEmail();
+        this.phone = copy.getPhone();
+        this.password = copy.getPassword();
+        this.nfcActive = copy.isNfcActive();
+        this.paymentStatus = copy.isPaymentStatus();
+        this.paymentInfo = copy.getPaymentInfo();
+
     }
 
     public String getName() {
@@ -72,5 +84,18 @@ public class User {
 
     public void setPaymentInfo(PaymentInfo paymentInfo) {
         this.paymentInfo = paymentInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", nfcActive=" + nfcActive +
+                ", paymentStatus=" + paymentStatus +
+                ", paymentInfo=" + paymentInfo +
+                '}';
     }
 }

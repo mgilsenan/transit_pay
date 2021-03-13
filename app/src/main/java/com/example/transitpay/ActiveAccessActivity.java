@@ -28,14 +28,7 @@ public class ActiveAccessActivity extends AppCompatActivity {
     }
 
     protected void displayProfile(){
-        if (getIntent().hasExtra("name")){
-            profile.append("name: " + getIntent().getStringExtra("name") + "\n");
-        }
-        if (getIntent().hasExtra("email")){
-            profile.append("email: " + getIntent().getStringExtra("email") + "\n");
-        }
-        if (getIntent().hasExtra("phone")){
-            profile.append("phone: " + getIntent().getStringExtra("phone") + "\n");
-        }
+
+        profile.append("phone: " + LoginActivity.getUser().toString() + "\n");
     }
 }

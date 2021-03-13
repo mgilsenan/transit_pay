@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+    public static User user ;
+
     Button callSignUpBtn, continueBtn;
     TextView welcome;
     TextInputLayout phone, password;
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         welcome = findViewById(R.id.welcome);
         phone = findViewById(R.id.loginPhone);
         password = findViewById(R.id.loginPassword);
+        user = new User();
 
     }
 
@@ -156,11 +159,13 @@ public class LoginActivity extends AppCompatActivity {
                         String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class);
                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
+                        // save user phone number upon loggin
+                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
+
                         Intent intent = new Intent(LoginActivity.this, ActiveAccessActivity.class);
-                        intent.putExtra("name", nameFromDB);
-                        intent.putExtra("email", emailFromDB);
-                        intent.putExtra("phone", phoneNoFromDB);
+
                         startActivity(intent);
+                        finish();
                     } else {
                         Log.d(TAG, "password not equal " + userEnteredPhone);
 
@@ -184,4 +189,6 @@ public class LoginActivity extends AppCompatActivity {
 
         });
     }
+
+    public static User getUser(){return user == null ? null: user;}
 }
