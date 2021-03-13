@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "929540309109",
+    "project_id": "transitpay-54282",
+    "storage_bucket": "transitpay-54282.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929540309109:android:7efad937fbb820a3d2383c",
+        "android_client_info": {
+          "package_name": "com.example.transitpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929540309109-qltg67me8nok5ilsmnkhdhfea0l8c7am.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRv1TpvI_YRQvggQ_2DYuZ5FOd-UigLjk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929540309109-qltg67me8nok5ilsmnkhdhfea0l8c7am.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

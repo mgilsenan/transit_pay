@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 //TODO use phone number instead of email when login
+// Logout button and forget my password features.
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -88,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void continueBtnAction(){
 
+        // @TODO Main display activity
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
