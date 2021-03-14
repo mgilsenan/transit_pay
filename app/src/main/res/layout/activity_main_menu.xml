@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FA171515"
+    tools:context=".MainMenuActivity">
+
+    <Button
+        android:id="@+id/LocationButton"
+        android:layout_width="213dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="60dp"
+        android:text="Location"
+        app:backgroundTint="#ABF8C539"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/citylinesButton"
+        android:layout_width="213dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="20dp"
+        android:text="City Transit Lines"
+        app:backgroundTint="#ABF8C539"
+        app:layout_constraintBottom_toTopOf="@+id/LocationButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/triphistoryButton"
+        android:layout_width="213dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="16dp"
+        android:text="Trip history"
+        app:backgroundTint="#ABF8C539"
+        app:layout_constraintBottom_toTopOf="@+id/citylinesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/purchasefareButton"
+        android:layout_width="213dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="20dp"
+        android:text="Purchase Fare"
+        app:backgroundTint="#ABF8C539"
+        app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/activationcardButton"
+        android:layout_width="213dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="104dp"
+        android:text="Card Activation"
+        app:backgroundTint="#ABF8C539"
+        app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/transitimageView"
+        android:layout_width="558dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toTopOf="@+id/purchasefareButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228"
+        app:srcCompat="@drawable/unknown" />
+</androidx.constraintlayout.widget.ConstraintLayout>
