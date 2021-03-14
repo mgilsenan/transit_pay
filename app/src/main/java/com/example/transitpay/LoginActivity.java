@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         String val = phone.getEditText().getText().toString();
         if (val.isEmpty()) {
             phone.setError("Field cannot be empty");
+            Log.d(TAG, "validate phone: " + val);
             return false;
         } else {
             phone.setError(null);
@@ -126,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         String val = password.getEditText().getText().toString();
         if (val.isEmpty()) {
             password.setError("Field cannot be empty");
+            Log.d(TAG, "validate password: " + val);
             return false;
         } else {
             password.setError(null);
