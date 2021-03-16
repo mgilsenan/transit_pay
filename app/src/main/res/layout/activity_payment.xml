@@ -8,8 +8,6 @@
     android:background="@drawable/payment"
     tools:context=".PaymentActivity">
 
-
-
     <EditText
         android:id="@+id/card_name"
         android:layout_width="match_parent"
@@ -17,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
-
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
         android:layout_marginTop="338dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/et_custom"
@@ -38,7 +36,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/et_custom"
         android:hint="@string/card_number"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:padding="15dp"
         android:textSize="15sp" />
 
@@ -50,14 +48,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-
+        android:maxLength="3"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="500dp"
         android:layout_marginEnd="17dp"
         android:layout_marginRight="17dp"
         android:background="@drawable/et_custom"
         android:hint="@string/CVV"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:padding="15dp"
         android:textSize="15sp" />
 
@@ -69,14 +67,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-
+        android:maxLength="4"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="499dp"
         android:layout_marginEnd="208dp"
         android:layout_marginRight="208dp"
         android:background="@drawable/et_custom"
         android:hint="@string/card_exp"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:padding="15dp"
         android:textSize="15sp" />
 

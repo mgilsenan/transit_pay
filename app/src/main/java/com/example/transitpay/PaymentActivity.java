@@ -50,11 +50,16 @@ public class PaymentActivity extends AppCompatActivity {
                 String cvv = cardCvv.getEditableText().toString();
 
                 PaymentInfo paymentInfo = new PaymentInfo(name, number, expiration, cvv);
-                PaymentStatus paymentStatus = new PaymentStatus("True");
-                reference.child("payment info").setValue(paymentInfo);
-                reference.child("payment status").setValue(paymentStatus);
-                toast = Toast.makeText(PaymentActivity.this, "Payment Successful", Toast.LENGTH_LONG);
-                toast.show();
+                if(name.isEmpty()||number.isEmpty()||expiration.isEmpty()||cvv.isEmpty()) {
+                    toast = Toast.makeText(PaymentActivity.this, "Payment Unsuccessful, please enter correct payment information", Toast.LENGTH_LONG);
+                    toast.show();
+                } else{
+                    PaymentStatus paymentStatus = new PaymentStatus("True");
+                    reference.child("payment info " + number).setValue(paymentInfo);
+                    reference.child("payment status").setValue(paymentStatus);
+                    toast = Toast.makeText(PaymentActivity.this, "Payment Successful", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 
