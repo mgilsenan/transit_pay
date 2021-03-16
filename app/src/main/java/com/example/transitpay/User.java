@@ -15,8 +15,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.nfcActive = false;
-        this.paymentStatus = false;
     }
 
     public void copy(User copy) {
@@ -24,10 +22,6 @@ public class User {
         this.email = copy.getEmail();
         this.phone = copy.getPhone();
         this.password = copy.getPassword();
-        this.nfcActive = copy.isNfcActive();
-        this.paymentStatus = copy.isPaymentStatus();
-        this.paymentInfo = copy.getPaymentInfo();
-
     }
 
     public String getName() {
@@ -62,29 +56,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean isNfcActive() {
-        return nfcActive;
-    }
-
-    public void setNfcActive(boolean nfcActive) {
-        this.nfcActive = nfcActive;
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
-    }
-
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
 
     @Override
     public String toString() {
@@ -93,9 +64,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
-                ", nfcActive=" + nfcActive +
-                ", paymentStatus=" + paymentStatus +
-                ", paymentInfo=" + paymentInfo +
                 '}';
     }
 }

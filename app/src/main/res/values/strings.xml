@@ -7,5 +7,15 @@
     <string name="welcome_trans">welcome_trans</string>
     <string name="message_trans">message_trans</string>
 
+    <string name="card_number">Card Number</string>
+    <string name="card_name">Card Name</string>
+    <string name="card_exp">Expiration (MM/YY)</string>
+    <string name="CVV">CVV</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="trip_one">1 Trip</string>
+    <string name="monthly_trip">Monthly Fare</string>
+    <string name="ten_trip">10 Trips</string>
+    <string name="two_trip">2 Trips</string>
+
 
 </resources>

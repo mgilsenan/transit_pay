@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/transitfare"
     tools:context=".TransitFareActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/one_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/two_trip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="42dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/trip_one"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+    <Button
+        android:id="@+id/two_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ten_trip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="58dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/two_trip"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+    <Button
+        android:id="@+id/ten_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/monthly_trip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="53dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/ten_trip"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+    <Button
+        android:id="@+id/monthly_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="71dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/monthly_trip"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+
+
+</RelativeLayout>
