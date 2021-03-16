@@ -39,7 +39,7 @@ public class ActivateCardActivity extends AppCompatActivity {
     private static final String TAG = "MyTAG NFC";
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
-    IntentFilter[] writingTagFilters; //agregure []
+    IntentFilter[] writingTagFilters;
     boolean writeMode;
     Tag myTag;
     Context context;
@@ -92,28 +92,7 @@ public class ActivateCardActivity extends AppCompatActivity {
         activateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //checks if we connected to a NFC tag
-
-                try
-                {
-                    if(myTag==null)
-                    {
-                        Toast.makeText(context, Error_Detected, Toast.LENGTH_LONG).show();
-                    }else{
-
-                        linkCard(phonenumberEditText.getText().toString()); //for firebase
-                        write("Phone number: "+ phonenumberEditText.getText().toString(), myTag);
-                    }
-                }
-
-                catch (IOException e)
-                {
-                    Toast.makeText(context, Write_Error, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                } catch (FormatException e){
-                    Toast.makeText(context, Write_Error, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
+                isCardAvailable();
             }
         });
     }
@@ -141,52 +120,23 @@ public class ActivateCardActivity extends AppCompatActivity {
             buildTagview(message); //reads message
         }
     }
+    //Function to check if the card has already been activated
 
-    //function to link the nfc tag to an existing account.
-    private void linkCard(String phoneNumber){
-        //orders the data by NFC TAG
+    private void isCardAvailable(){
         Query query= ref
                 .orderByChild("NFC TAG").equalTo(bin2hex(myTag.getId()));
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() { //addValueEventListener
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-
-//                    Toast.makeText(getApplicationContext(), "This card is linked " +
-//                                    "to another account. Please try with a different card",
-//                            Toast.LENGTH_LONG).show();
-
+                if (snapshot.exists()) {
+                    Toast.makeText(getApplicationContext(), "This card is linked " +
+                                    "to another account. Please try with a different card",
+                            Toast.LENGTH_LONG).show();
                 }
-                else {
-
-                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-
-
-                            if (snapshot.child(phoneNumber).exists() ) {
-
-                                mDbRef.child(phoneNumber).child("Valid card").
-                                        setValue("TRUE");
-                                mDbRef.child(phoneNumber).child("NFC TAG").
-                                        setValue( bin2hex(myTag.getId()));
-
-
-                            }else{
-
-                                Toast.makeText(ActivateCardActivity.
-                                                this, "Phone number is not linked to an account",
-                                        Toast.LENGTH_LONG).show();
-                            }}
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                else{
+                    linkCard(phonenumberEditText.getText().toString());
                 }
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -194,6 +144,52 @@ public class ActivateCardActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //function to link the nfc tag to an existing account.
+    private void linkCard(String phoneNumber){
+        //orders the data by NFC TAG
+         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot snapshot) {
+
+                 if (snapshot.child(phoneNumber).exists() ) {
+
+                     mDbRef.child(phoneNumber).child("Valid card").setValue("TRUE");
+                     mDbRef.child(phoneNumber).child("NFC TAG").setValue( bin2hex(myTag.getId()));
+                     try
+                     {
+                         if(myTag==null)
+                         {
+                             Toast.makeText(context, Error_Detected, Toast.LENGTH_LONG).show();
+
+                         }else{
+
+                             write("Phone number: "+ phonenumberEditText.getText().toString(),
+                                     myTag);
+                         }
+                     }
+                     catch (IOException e) {
+
+                         Toast.makeText(context, Write_Error, Toast.LENGTH_LONG).show();
+                         e.printStackTrace();
+
+                     } catch (FormatException e){
+
+                         Toast.makeText(context, Write_Error, Toast.LENGTH_LONG).show();
+                         e.printStackTrace();
+                     }
+                 }else{
+                     Toast.makeText(ActivateCardActivity.
+                                     this, "Phone number is not linked to an account",
+                                        Toast.LENGTH_LONG).show();
+                 }
+             }
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+
+             }
+         });
     }
 
     //function to add the contents of the NFC
@@ -266,8 +262,8 @@ public class ActivateCardActivity extends AppCompatActivity {
         {
             myTag=intent.getParcelableExtra(NfcAdapter.EXTRA_TAG); //here i get the UID of the NFC tag
             Log.d(TAG, "tag ID= " + myTag.getId().toString());
-            Toast.makeText(this,"tag ID= " + bin2hex(myTag.getId()),
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"tag ID= " + bin2hex(myTag.getId()),
+//                    Toast.LENGTH_LONG).show();
         }
     }
 

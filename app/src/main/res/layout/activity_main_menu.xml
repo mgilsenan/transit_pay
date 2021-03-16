@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FA171515"
+    android:background="@drawable/main_menu_background"
     tools:context=".MainMenuActivity">
+
 
     <Button
         android:id="@+id/LocationButton"
@@ -16,7 +17,8 @@
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#050505"/>
 
     <Button
         android:id="@+id/citylinesButton"
@@ -25,9 +27,11 @@
         android:layout_marginBottom="20dp"
         android:text="City Transit Lines"
         app:backgroundTint="#ABF8C539"
+        app:iconTint="#090808"
         app:layout_constraintBottom_toTopOf="@+id/LocationButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#050505"/>
 
     <Button
         android:id="@+id/triphistoryButton"
@@ -38,7 +42,8 @@
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toTopOf="@+id/citylinesButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#050505"/>
 
     <Button
         android:id="@+id/purchasefareButton"
@@ -49,7 +54,8 @@
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#050505"/>
 
     <Button
         android:id="@+id/activationcardButton"
@@ -58,19 +64,11 @@
         android:layout_marginBottom="104dp"
         android:text="Card Activation"
         app:backgroundTint="#ABF8C539"
+        app:iconTint="#070707"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/transitimageView"
-        android:layout_width="558dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/purchasefareButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.228"
-        app:srcCompat="@drawable/unknown" />
+        android:textColor="#050505"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
