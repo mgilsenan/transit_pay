@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                         // save user phone number upon loggin
                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
 
-                        Intent intent = new Intent(LoginActivity.this, ActiveAccessActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
 
                         startActivity(intent);
                         finish();

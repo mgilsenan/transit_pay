@@ -75,7 +75,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //startActivity(intent);
     }
     private void goToPurchaseActivity(){
-        Intent intent= new Intent(MainMenuActivity.this, PaymentActivity.class);
+        Intent intent= new Intent(MainMenuActivity.this, TransitFareActivity.class);
         startActivity(intent);
     }
     private void  goToCityLinesActivity(){
