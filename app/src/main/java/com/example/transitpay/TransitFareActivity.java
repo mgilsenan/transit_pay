@@ -8,27 +8,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 //TODO display different fare options in list view. Each elements are clickable and open a fragment
 
 public class TransitFareActivity extends AppCompatActivity {
 
+    FirebaseDatabase rootNode;
+    DatabaseReference reference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transit_fare);
 
-        Button oneTrip, twoTrips, tenTrips, monthlyFare;
+        Button oneTrip, twoTrips, tenTrips, threeDayPass, weeklyPass, monthlyPass;
 
         oneTrip = findViewById(R.id.one_trip);
         twoTrips = findViewById(R.id.two_trip);
         tenTrips = findViewById(R.id.ten_trip);
-        monthlyFare = findViewById(R.id.monthly_trip);
+        threeDayPass = findViewById(R.id.threeday_trip);
+        weeklyPass = findViewById(R.id.weekly_trip);
+        monthlyPass = findViewById(R.id.monthly_trip);
 
         oneTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                assignFareType("1");
                 Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
@@ -37,6 +44,7 @@ public class TransitFareActivity extends AppCompatActivity {
         twoTrips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                assignFareType("2");
                 Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
@@ -45,18 +53,49 @@ public class TransitFareActivity extends AppCompatActivity {
         tenTrips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                assignFareType("10");
                 Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
         });
 
-        monthlyFare.setOnClickListener(new View.OnClickListener() {
+        threeDayPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                assignFareType("3Day");
                 Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
         });
 
+        weeklyPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assignFareType("W");
+                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        monthlyPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assignFareType("M");
+                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void assignFareType(String fareType) {
+        rootNode = FirebaseDatabase.getInstance();
+        String phoneNumber = null;
+        if (LoginActivity.getUser() != null) {
+            User user = LoginActivity.getUser();
+            phoneNumber = user.phone;
+        }
+        reference = rootNode.getReference("user/"+phoneNumber);
+        reference.child("Fare Type").setValue(fareType);
     }
 }
