@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -35,7 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     TextView welcome;
     TextInputLayout phone, password;
 
-    FirebaseDatabase rootNode;
+    // store user info into local preference file
+    public static SharedPreferences pref ;
+    public static final String myPreference = "myPreference";
+    public static final String userPhone =  "userPhoneKey";
+    public static final String userPassword = "userPasswordKey";
+    String phoneStr;
+    String passwordStr;
+
+
+    //    FirebaseDatabase rootNode;
     DatabaseReference reference;
 
     @Override
@@ -45,12 +56,25 @@ public class LoginActivity extends AppCompatActivity {
 
         setUp();
 
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         callSignUpBtnAction();
 
-        continueBtnAction();
-
-
-
+        pref = getSharedPreferences(myPreference, Context.MODE_PRIVATE);
+        if (pref.contains(userPhone)){
+            // user has login in with this device before
+            phoneStr = pref.getString(userPhone, "");
+            passwordStr = pref.getString(userPassword, "");
+            isUser(true);
+        } else{
+            // login info is not saved locally
+            continueBtnAction();
+        }
 
     }
 
@@ -101,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                     toast = Toast.makeText(LoginActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    isUser();
+                    isUser(false);
                 }
 
             }
@@ -136,10 +160,18 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void isUser() {
+    private void isUser(boolean existingUser) {
+        String userEnteredPhone;
+        String userEnteredPassword;
         //progressBar.setVisibility(View.VISIBLE);
-        final String userEnteredPhone = phone.getEditText().getText().toString().trim();
-        final String userEnteredPassword = password.getEditText().getText().toString().trim();
+        if (existingUser){
+            userEnteredPhone = phoneStr;
+            userEnteredPassword = passwordStr;
+        }else{
+            userEnteredPhone = phone.getEditText().getText().toString().trim();
+            userEnteredPassword = password.getEditText().getText().toString().trim();
+        }
+
         reference = FirebaseDatabase.getInstance().getReference("user");
         Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
 
@@ -161,17 +193,19 @@ public class LoginActivity extends AppCompatActivity {
                         String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class);
                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
-                        // save user phone number upon loggin
+                        // save user phone number upon successfully login
                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
+
+                        saveUser();
 
                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
 
                         startActivity(intent);
-                        finish();
+//                        finish();
                     } else {
                         Log.d(TAG, "password not equal " + userEnteredPhone);
 
-                       // progressBar.setVisibility(View.GONE);
+                        // progressBar.setVisibility(View.GONE);
                         password.setError("Wrong Password");
                         password.requestFocus();
                     }
@@ -193,4 +227,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static User getUser(){return user == null ? null: user;}
+
+    private static void saveUser (){
+        // save user's preference
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(userPhone, user.getPhone());
+        editor.putString(userPassword, user.getPassword());
+        editor.commit();
+    }
+
+    private static void clearUser(){
+        // clear user's preference may be useful in logout or remove account from a device
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+
 }
