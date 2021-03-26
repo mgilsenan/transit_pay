@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -16,6 +17,9 @@ public class OrderSheet {
   private View payWithGoogleButton;
   private boolean payWithGoogleButtonEnabled;
   private boolean showing;
+
+  TextView fare;
+  TextView price;
 
   public void setOnPayWithCardClickListener(Runnable listener) {
     onPayWithCardClickListener = listener;
@@ -37,6 +41,17 @@ public class OrderSheet {
     BottomSheetDialog dialog = new BottomSheetDialog(activity);
     View sheetView = LayoutInflater.from(activity).inflate(R.layout.sheet_order, null);
 
+    fare = sheetView.findViewById(R.id.fare_type);
+
+    price = sheetView.findViewById(R.id.price);
+
+    String fareType = CheckoutActivity.getFareType();
+
+    String farePrice = CheckoutActivity.getFarePrice();
+
+    fare.setText(fareType);
+    price.setText(farePrice);
+
     View closeButton = sheetView.findViewById(R.id.close_sheet_button);
     View payWithCardButton = sheetView.findViewById(R.id.pay_with_card_button);
     payWithCardButton.setOnClickListener(v -> {
@@ -45,13 +60,6 @@ public class OrderSheet {
       onPayWithCardClickListener.run();
     });
 
-//    payWithGoogleButton = sheetView.findViewById(R.id.pay_with_google_button);
-//    payWithGoogleButton.setEnabled(payWithGoogleButtonEnabled);
-//    payWithGoogleButton.setOnClickListener(v -> {
-//      dialog.dismiss();
-//      showing = false;
-//      onPayWithGoogleClickListener.run();
-//    });
 
     closeButton.setOnClickListener(v -> dialog.dismiss());
 

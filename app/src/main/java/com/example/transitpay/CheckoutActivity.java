@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +21,6 @@ import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
-
-import java.util.ArrayList;
 
 import sqip.CardEntry;
 import sqip.GooglePay;
@@ -37,23 +35,31 @@ public class CheckoutActivity extends AppCompatActivity {
   private GooglePayChargeClient googlePayChargeClient;
   private PaymentsClient paymentsClient;
   private OrderSheet orderSheet;
-  ListView listView;
+
+  public static String fareType;
+  public static String farePrice;
+  TextView fare;
+
+  TextView price;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_cookie);
+    setContentView(R.layout.activity_checkout);
 
-//    listView = (ListView)findViewById(R.id.listView);
-//
-//    ArrayList<String> arrayList= new ArrayList<>();
-//
-//    arrayList.add(" Single Fare                     $1.00");
-//
-//    //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
-//    ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.listview,arrayList);
-//
-//    listView.setAdapter(arrayAdapter);
+    Bundle bundle = getIntent().getExtras();
+
+    fareType = bundle.getString("fare");
+
+    farePrice = bundle.getString("price");
+
+    fare = findViewById(R.id.fare_type);
+
+    price = findViewById(R.id.fare_price);
+
+    fare.setText(fareType);
+
+    price.setText(farePrice);
 
     googlePayChargeClient = (GooglePayChargeClient) getLastCustomNonConfigurationInstance();
     if (googlePayChargeClient == null) {
@@ -81,6 +87,10 @@ public class CheckoutActivity extends AppCompatActivity {
       }
     });
   }
+
+  public static String getFareType(){return fareType;}
+
+  public static String getFarePrice(){return farePrice;}
 
   @Override
   public GooglePayChargeClient onRetainCustomNonConfigurationInstance() {

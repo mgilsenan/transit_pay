@@ -16,10 +16,6 @@ public final class ChargeResult {
 
   public final boolean success;
   public final boolean networkError;
-
-  /**
-   * Set if {@link #success} is false and {@link #networkError} is false.
-   */
   public final String errorMessage;
 
   private ChargeResult(boolean success, boolean networkError, String errorMessage) {

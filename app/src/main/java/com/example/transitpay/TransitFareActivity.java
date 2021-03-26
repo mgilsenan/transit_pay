@@ -36,7 +36,20 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("1");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String oneTrip="Single Trip Fare";
+
+                String price="$3.50";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",oneTrip);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -45,7 +58,21 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("2");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String twoTrip="Two Trip Fare";
+
+                String price="$6.50";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",twoTrip);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -54,7 +81,20 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("10");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String tenTrip="10 Trip Fare";
+
+                String price="$29.50";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",tenTrip);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -63,7 +103,20 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("3Day");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String threeTrip="Three Day Fare";
+
+                String price="$20.00";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",threeTrip);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -72,7 +125,20 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("W");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String weekFare = "Weekly Fare";
+
+                String price="$27.25";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",weekFare);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
@@ -81,7 +147,20 @@ public class TransitFareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 assignFareType("M");
-                Intent intent= new Intent(TransitFareActivity.this, PaymentActivity.class);
+                Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
+
+                String weekFare = "Monthly Fare";
+
+                String price="$88.50";
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("fare",weekFare);
+
+                bundle.putString("price",price);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });

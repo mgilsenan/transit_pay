@@ -54,7 +54,7 @@
 
 
     <TextView
-        android:id="@+id/ship_to"
+        android:id="@+id/purchase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="32dp"
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="ship_to, total"
+        app:constraint_referenced_ids="purchase, total"
         />
 
     <TextView
@@ -84,12 +84,12 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/right_info_guide"
         app:layout_constraintStart_toEndOf="@id/column_separator"
-        app:layout_constraintTop_toTopOf="@id/ship_to"
+        app:layout_constraintTop_toTopOf="@id/purchase"
         />
 
 
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/fare_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -103,14 +103,14 @@
         />
 
     <View
-        android:id="@+id/ship_separator"
+        android:id="@+id/separator"
         android:layout_width="0dp"
         android:layout_height="@dimen/sheetSeparatorHeight"
         android:layout_marginTop="24dp"
         android:background="@color/colorSheetSeparator"
         app:layout_constraintEnd_toStartOf="@id/right_info_guide"
         app:layout_constraintStart_toStartOf="@id/left_info_guide"
-        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintTop_toBottomOf="@+id/fare_type"
         />
 
     <TextView
@@ -123,7 +123,7 @@
         android:textColor="@color/colorSheetLabel"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@id/left_info_guide"
-        app:layout_constraintTop_toBottomOf="@+id/ship_separator"
+        app:layout_constraintTop_toBottomOf="@+id/separator"
         />
 
 
@@ -137,7 +137,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/right_info_guide"
         app:layout_constraintStart_toEndOf="@id/column_separator"
-        app:layout_constraintTop_toBottomOf="@+id/ship_separator"
+        app:layout_constraintTop_toBottomOf="@+id/separator"
         />
 
     <View

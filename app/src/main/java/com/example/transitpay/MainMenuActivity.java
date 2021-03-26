@@ -71,8 +71,7 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
     private void goToLocationActivity(){
-        Intent intent= new Intent(MainMenuActivity.this, CheckoutActivity.class);
-        startActivity(intent);
+
     }
     private void goToPurchaseActivity(){
         Intent intent= new Intent(MainMenuActivity.this, TransitFareActivity.class);
