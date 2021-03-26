@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:layout_marginTop="8dp"
+      android:gravity="center"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="130dp"
+        android:text="@string/place_your_order"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="96dp"
+
+        android:paddingEnd="32dp"
+        android:text="Single Fare"
+        android:textColor="@color/colorSheetLabel"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="163dp"
+        android:layout_marginTop="96dp"
+        android:gravity="right"
+        android:layout_marginEnd="21dp"
+        android:layout_toEndOf="@+id/left"
+        android:paddingEnd="32dp"
+        android:text="$3.75"
+        android:textColor="@color/colorSheetLabel"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/buy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="39dp"
+        android:text="@string/buy_button" />
+
+  </RelativeLayout>
+</ScrollView>
