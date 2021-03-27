@@ -29,7 +29,6 @@
 
 
         <activity android:name=".TransitFareActivity"></activity>
-        <activity android:name=".PaymentActivity" />
         <activity android:name=".ActiveAccessActivity" />
         <activity android:name=".LoginActivity"
             android:label="login"/>

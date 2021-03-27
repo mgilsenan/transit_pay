@@ -2,8 +2,6 @@ package com.example.transitpay;
 
 public class User {
     String name, email, phone, password;
-    boolean nfcActive, paymentStatus;
-    PaymentInfo paymentInfo;
 
     public User() {
         // default;

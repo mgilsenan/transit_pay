@@ -61,6 +61,10 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
 
     reference = rootNode.getReference("user/"+phoneNumber);
 
+    PaymentStatus paymentStatus = new PaymentStatus("True");
+
+    reference.child("Payment status").setValue(paymentStatus);
+
     reference.child("Fare Type").setValue(fareType);
   }
 
@@ -87,4 +91,5 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
     }
     return fareType;
   }
+
 }
