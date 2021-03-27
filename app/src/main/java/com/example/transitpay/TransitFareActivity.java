@@ -35,7 +35,7 @@ public class TransitFareActivity extends AppCompatActivity {
         oneTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("1");
+
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
                 String oneTrip="Single Trip Fare";
@@ -57,7 +57,6 @@ public class TransitFareActivity extends AppCompatActivity {
         twoTrips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("2");
 
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
@@ -80,7 +79,7 @@ public class TransitFareActivity extends AppCompatActivity {
         tenTrips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("10");
+
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
                 String tenTrip="10 Trip Fare";
@@ -102,7 +101,7 @@ public class TransitFareActivity extends AppCompatActivity {
         threeDayPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("3Day");
+
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
                 String threeTrip="Three Day Fare";
@@ -124,7 +123,7 @@ public class TransitFareActivity extends AppCompatActivity {
         weeklyPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("W");
+
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
                 String weekFare = "Weekly Fare";
@@ -146,7 +145,7 @@ public class TransitFareActivity extends AppCompatActivity {
         monthlyPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignFareType("M");
+
                 Intent intent= new Intent(TransitFareActivity.this, CheckoutActivity.class);
 
                 String weekFare = "Monthly Fare";
@@ -167,14 +166,4 @@ public class TransitFareActivity extends AppCompatActivity {
 
     }
 
-    private void assignFareType(String fareType) {
-        rootNode = FirebaseDatabase.getInstance();
-        String phoneNumber = null;
-        if (LoginActivity.getUser() != null) {
-            User user = LoginActivity.getUser();
-            phoneNumber = user.phone;
-        }
-        reference = rootNode.getReference("user/"+phoneNumber);
-        reference.child("Fare Type").setValue(fareType);
-    }
 }
