@@ -5,9 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CitylinesActivity extends AppCompatActivity {
-    protected TextView citylinesTextView;
+import com.github.chrisbanes.photoview.PhotoView;
 
+public class CitylinesActivity extends AppCompatActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,6 +15,8 @@ public class CitylinesActivity extends AppCompatActivity {
         setupUI();
     }
     private void setupUI(){
-        citylinesTextView=findViewById(R.id.citylinestextView);
+        PhotoView photoView = (PhotoView)
+                findViewById(R.id.photo_view);
+        photoView.setImageResource(R.drawable.mtlmetro);
     }
 }

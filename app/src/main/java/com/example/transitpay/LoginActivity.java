@@ -1,19 +1,28 @@
 package com.example.transitpay;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,12 +40,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public static User user ;
 
-    Button callSignUpBtn, continueBtn;
+    Button callSignUpBtn, continueBtn,forgetPasswordBtn;
     TextView welcome;
     TextInputLayout phone, password;
 
     FirebaseDatabase rootNode;
     DatabaseReference reference;
+    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +59,9 @@ public class LoginActivity extends AppCompatActivity {
 
         continueBtnAction();
 
+        forgetPasswordBtnAction();
 
+        fAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -58,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         //Hooks
         callSignUpBtn = findViewById(R.id.signUpBtn);
         continueBtn = findViewById(R.id.loginContinueBtn);
+        forgetPasswordBtn=findViewById(R.id.forgetPasswordBtn);
         welcome = findViewById(R.id.welcome);
         phone = findViewById(R.id.loginPhone);
         password = findViewById(R.id.loginPassword);
@@ -107,8 +120,49 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    protected void forgetPasswordBtnAction(){
+        forgetPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText resetMail =  new EditText(v.getContext());
+                AlertDialog.Builder passwordRestDialog = new AlertDialog.Builder(v.getContext());
+                passwordRestDialog.setTitle("Reset Password?");
+                passwordRestDialog.setMessage("Enter Your Email to Receive Reset Link. ");
+                passwordRestDialog.setView(resetMail);
+
+                passwordRestDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //extract the email and send reset link
+                        String mail = resetMail.getText().toString();
+                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(LoginActivity.this, "Error! Reset Link is Not Sent", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                passwordRestDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //close the dialog
+                    }
+                });
+
+                passwordRestDialog.create().show();
+            }
+        });
 
     }
+
 
     private Boolean validatePhone() {
         String val = phone.getEditText().getText().toString();
@@ -148,32 +202,52 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    phone.setError(null);
-                    phone.setErrorEnabled(false);
                     //TODO we might change the line below------------------------------------------------------------
-                    String passwordFromDB = dataSnapshot.child(userEnteredPhone).child("password").getValue(String.class);
-                    if (passwordFromDB.equals(userEnteredPassword)) {
-                        Log.d(TAG, "password Equal " + userEnteredPhone);
+                    String phoneFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+                    if (phoneFromDB.equals(userEnteredPhone)) {
+                        //Log.d(TAG, "password Equal " + userEnteredPhone);
 
-                        phone.setError(null);
-                        phone.setErrorEnabled(false);
-                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
-                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class);
-                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+
+                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class).trim();
+
+                        fAuth.signInWithEmailAndPassword(emailFromDB,userEnteredPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    if(fAuth.getCurrentUser().isEmailVerified()){
+                                        phone.setError(null);
+                                        phone.setErrorEnabled(false);
+
+                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
+                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
+                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+
+                                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else{
+                                        Toast.makeText(LoginActivity.this, "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                else {
+                                    Log.d(TAG, "password not equal " + userEnteredPhone);
+
+                                    // progressBar.setVisibility(View.GONE);
+                                    password.setError("User Not Exit or Incorrect Password");
+                                    password.requestFocus();
+
+                                }
+                            }
+                        });
 
                         // save user phone number upon loggin
-                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
+                        //user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
 
-                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
 
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Log.d(TAG, "password not equal " + userEnteredPhone);
-
-                       // progressBar.setVisibility(View.GONE);
-                        password.setError("Wrong Password");
-                        password.requestFocus();
                     }
                 } else {
                     Log.d(TAG, "no snapshot " + userEnteredPhone);
