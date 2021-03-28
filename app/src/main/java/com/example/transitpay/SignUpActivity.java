@@ -1,17 +1,24 @@
 package com.example.transitpay;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,6 +29,10 @@ public class SignUpActivity extends AppCompatActivity {
     Button loginBtn, continueBtn;
     TextView welcome;
     TextInputLayout email, password, name, phone;
+    FirebaseAuth fAuth;
+    String userID;
+    final static String TAG = "SignUpActivity";
+
 
     FirebaseDatabase rootNode;
     DatabaseReference childNode;
@@ -39,11 +50,11 @@ public class SignUpActivity extends AppCompatActivity {
         // go to log in page
         loginBtnAction();
 
-
-
         // save data in Firebase
         continueBtnAction();
 
+        //get firebaseAuthentication
+        fAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -79,17 +90,35 @@ public class SignUpActivity extends AppCompatActivity {
                     String passwordStr = password.getEditText().getText().toString();
                     String phoneStr = phone.getEditText().getText().toString();
 
+                    fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
+                                                Toast.LENGTH_LONG).show();
+                                        User user = new User(nameStr, emailStr, phoneStr, passwordStr);
 
-                    User user = new User(nameStr, emailStr,  phoneStr, passwordStr);
+                                        childNode.child(phoneStr).setValue(user);
 
-                    childNode.child(phoneStr).setValue(user);
+                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
 
-                    toast = Toast.makeText(SignUpActivity.this, "Successful", Toast.LENGTH_LONG);
-                    toast.show();
 
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                                }
+                            });
+                        }
+                    });
+
+
                 }
 
             }
@@ -149,7 +178,7 @@ public class SignUpActivity extends AppCompatActivity {
             password.setError("Invalid pattern");
             return false;
         }
-            else{
+        else{
             password.setError(null);
             password.setErrorEnabled(false);
             return true;
