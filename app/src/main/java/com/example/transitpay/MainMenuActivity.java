@@ -2,6 +2,9 @@ package com.example.transitpay;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +18,7 @@ public class MainMenuActivity extends AppCompatActivity {
     protected Button purchaseButton;
     protected Button citylinesButton;
     protected Button activateButton;
-
+    protected Button profileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainMenuActivity extends AppCompatActivity {
         citylinesButton=findViewById(R.id.citylinesButton);
         purchaseButton=findViewById(R.id.purchasefareButton);
         activateButton = findViewById(R.id.activationcardButton);
+        profileButton = findViewById(R.id.profileBtn);
 
         triphistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +68,13 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open fragment
+                setFragment(new ProfileFragment());
+            }
+        });
 
     }
     private void goToTripHistoryActivity(){
@@ -85,4 +96,12 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
         startActivity(intent);
     }
+
+    private void setFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        fragmentTransaction.commit();
+    }
+
 }

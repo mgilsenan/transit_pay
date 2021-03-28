@@ -14,11 +14,11 @@
         android:layout_height="66dp"
         android:layout_marginBottom="60dp"
         android:text="Location"
+        android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/citylinesButton"
@@ -69,6 +69,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="#050505"/>
+
+    <Button
+        android:id="@+id/profileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="5dp"
+        android:text="edit profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LocationButton" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/sqip_default_grey"
+        tools:layout="@layout/fragment_profile"
+        app:layout_constraintBottom_toBottomOf="@+id/profileBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

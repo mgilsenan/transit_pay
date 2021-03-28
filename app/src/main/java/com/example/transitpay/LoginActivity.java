@@ -150,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     phone.setError(null);
                     phone.setErrorEnabled(false);
-                    //TODO we might change the line below------------------------------------------------------------
                     String passwordFromDB = dataSnapshot.child(userEnteredPhone).child("password").getValue(String.class);
                     if (passwordFromDB.equals(userEnteredPassword)) {
                         Log.d(TAG, "password Equal " + userEnteredPhone);
