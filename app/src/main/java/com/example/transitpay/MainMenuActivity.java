@@ -73,6 +73,9 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
     private void goToLocationActivity(){
+        
+        Intent intent= new Intent(MainMenuActivity.this, MapsActivity.class);
+        startActivity(intent);
 
     }
     private void goToPurchaseActivity(){
@@ -87,4 +90,6 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
         startActivity(intent);
     }
+    
+    
 }
