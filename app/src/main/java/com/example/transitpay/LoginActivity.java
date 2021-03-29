@@ -224,6 +224,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                        intent.putExtra("Phone number", phoneNoFromDB);
                                         startActivity(intent);
                                         finish();
                                     }
