@@ -5,9 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/transitfare"
+    android:background="@drawable/fares_vector"
     tools:context=".TransitFareActivity">
 
+
+    <ImageView
+        android:id="@+id/purchase_fare"
+        android:src="@drawable/purchase_fare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <Button
         android:id="@+id/one_trip"
@@ -17,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="42dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/btn_custom"
         android:text="@string/trip_one"
         android:textColor="@android:color/black"
@@ -31,7 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="58dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/btn_custom"
         android:text="@string/two_trip"
         android:textColor="@android:color/black"
@@ -41,13 +48,41 @@
         android:id="@+id/ten_trip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/threeday_trip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/ten_trip"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+    <Button
+        android:id="@+id/threeday_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/weekly_trip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/btn_custom"
+        android:text="@string/threeday_trip"
+        android:textColor="@android:color/black"
+        app:backgroundTint="#FFCD05" />
+
+    <Button
+        android:id="@+id/weekly_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/monthly_trip"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="53dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/btn_custom"
-        android:text="@string/ten_trip"
+        android:text="@string/weekly_trip"
         android:textColor="@android:color/black"
         app:backgroundTint="#FFCD05" />
 
@@ -59,12 +94,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="71dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/btn_custom"
         android:text="@string/monthly_trip"
         android:textColor="@android:color/black"
         app:backgroundTint="#FFCD05" />
-
 
 
 </RelativeLayout>

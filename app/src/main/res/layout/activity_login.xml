@@ -84,5 +84,13 @@
         android:background="#00000000"
         android:textColor="@color/black"
         android:transitionName="@string/signUp_login_trans"/>
+    <Button
+        android:id="@+id/forgetPasswordBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:text="forget your password? "
+        android:textColor="@color/black"
+        android:transitionName="@string/signUp_login_trans" />
 
 </LinearLayout>
