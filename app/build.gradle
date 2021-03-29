@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.transitpay"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.6.0'
     implementation 'com.google.android.material:material:1.4.0-alpha01'
     implementation 'com.google.firebase:firebase-auth:20.0.3'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0' // Gmaps
+
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

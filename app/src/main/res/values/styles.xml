@@ -17,6 +17,12 @@
     <item name="android:textSize">@dimen/buttonTextSize</item>
   </style>
 
+  <style name="titlebar" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
   <style name="CardEntryButton" parent="CustomButton">
     <item name="android:background">@drawable/card_entry_button</item>
   </style>
