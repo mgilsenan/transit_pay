@@ -99,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     if(task.isSuccessful()) {
                                         Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
                                                 Toast.LENGTH_LONG).show();
-                                        User user = new User(nameStr, emailStr, phoneStr, passwordStr);
+                                        User user = new User(nameStr, emailStr, phoneStr);
 
                                         childNode.child(phoneStr).setValue(user);
 
