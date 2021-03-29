@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/Retro_map"
+        android:title="@string/Retro_map"
+        app:showAsAction="never"/>
+    <item android:id="@+id/Dark_map"
+        android:title="@string/Dark_map"
+        app:showAsAction="never"/>
+    <item android:id="@+id/Cartoon_map"
+        android:title="@string/Cartoon_map"
+        app:showAsAction="never"/>
+    <item android:id="@+id/Normal_map"
+        android:title="@string/Normal_map"
+        app:showAsAction="never"/>
+    <item android:id="@+id/hybrid_map"
+        android:title="@string/hybrid_map"
+        app:showAsAction="never"/>
+    <item android:id="@+id/satellite_map"
+        android:title="@string/satellite_map"
+        app:showAsAction="never"/>
+
+</menu>
