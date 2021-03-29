@@ -67,7 +67,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
     private void goToTripHistoryActivity(){
+        String phone_number=getIntent().getStringExtra("Phone number");
         Intent intent= new Intent(MainMenuActivity.this, TripHistoryActivity.class);
+        intent.putExtra("Phone number", phone_number);
         startActivity(intent);
     }
     private void goToLocationActivity(){

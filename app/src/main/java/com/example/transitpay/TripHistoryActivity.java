@@ -2,6 +2,7 @@ package com.example.transitpay;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,8 +40,8 @@ public class TripHistoryActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_history_activity);
-        User user = LoginActivity.getUser();
-        String phoneNumber = user.phone;
+        String phoneNumber = getIntent().getStringExtra("Phone number");
+        Log.e("PHONE NUMBER", "onCreate: "+phoneNumber);
         tDatabase = FirebaseDatabase.getInstance();
         dbTrip=tDatabase.getReference("user");
         String path="user/";
