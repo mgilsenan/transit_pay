@@ -213,7 +213,12 @@ public class LoginActivity extends AppCompatActivity {
                         fAuth.signInWithEmailAndPassword(emailFromDB,userEnteredPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                // use the password given by the user and user the email that is stored in the database based on given phone number
+                                // if the password in database does not match with user provided password then fail.
+                                // if the email stored in the authentication match with real time database email then success fully login
                                 if(task.isSuccessful()){
+                                    //
+                                    Log.d(TAG, "login success  " + userEnteredPhone);
                                     if(fAuth.getCurrentUser().isEmailVerified()){
                                         phone.setError(null);
                                         phone.setErrorEnabled(false);
@@ -225,6 +230,8 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
                                         intent.putExtra("Phone number", phoneNoFromDB);
+                                        // save user phone number upon loggin
+                                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
                                         startActivity(intent);
                                         finish();
                                     }
@@ -244,9 +251,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
-                        // save user phone number upon loggin
-                        //user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB,passwordFromDB ));
 
 
                     }
