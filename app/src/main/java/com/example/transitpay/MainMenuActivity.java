@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -90,6 +93,40 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
         startActivity(intent);
     }
-    
-    
+
+
+    // Logout option------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // set the menu icon of the page with layout xml
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.logout_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = null; // value of the intent is depends on the user selected button option
+        switch(item.getItemId()){
+            case R.id.Logout:
+                Toast.makeText(this, "Logged out from account", Toast.LENGTH_LONG).show();
+                // destroy local user obj and return to login activity
+                LoginActivity.getUser().setPhone("");
+                LoginActivity.getUser().setName("");
+                LoginActivity.getUser().setEmail("");
+                intent = new Intent(MainMenuActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.Profile:
+                intent= new Intent(MainMenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
 }

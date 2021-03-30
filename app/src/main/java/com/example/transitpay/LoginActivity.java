@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -272,4 +275,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static User getUser(){return user == null ? null: user;}
+
+
 }

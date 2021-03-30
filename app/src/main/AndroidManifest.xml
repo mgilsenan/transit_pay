@@ -1,95 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.transitpay">
-    <uses-permission android:name="android.permission.NFC"/>
+
+    <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ExampleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.TransitPay.CheckoutActivity">
+        <activity android:name=".ProfileActivity"
+            android:parentActivityName=".MainMenuActivity">
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true"/>
-
+            android:value="true" />
         <meta-data
             android:name="sqip.SQUARE_APPLICATION_ID"
-            android:value="sandbox-sq0idb-Dz5RkDU0AwfbNrSOlu4bBg"/>
-
+            android:value="sandbox-sq0idb-Dz5RkDU0AwfbNrSOlu4bBg" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD6quDUmWSIs1V3sDX39nTw2KyVOtlrZTs" />
-        <activity
-            android:name=".CheckoutActivity"
-            />
-            <!--<intent-filter>
+
+        <activity android:name=".CheckoutActivity" />
+        <!--
+<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>-->
-
-
-        <activity android:name=".TransitFareActivity"></activity>
+        </activity>
+        -->
+        <activity android:name=".TransitFareActivity" />
         <activity android:name=".ActiveAccessActivity" />
-        <activity android:name=".LoginActivity"
-            android:label="login"/>
+        <activity
+            android:name=".LoginActivity"
+            android:label="login" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity"
-            >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-
             android:name=".TripHistoryActivity"
             android:label="Trip History Activity"
-            android:parentActivityName=".MainMenuActivity">
-        </activity>
+            android:parentActivityName=".MainMenuActivity"></activity>
         <activity
-
             android:name=".CitylinesActivity"
-            android:parentActivityName=".MainMenuActivity">
-        </activity>
-
+            android:parentActivityName=".MainMenuActivity"></activity>
         <activity
-
             android:name=".MainMenuActivity"
-            android:parentActivityName=".ActiveAccessActivity">
-
-        </activity>
+            android:parentActivityName=".ActiveAccessActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"></activity>
         <activity
-
             android:name=".ActivateCardActivity"
             android:parentActivityName=".MainMenuActivity">
             <intent-filter>
-
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MapsActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
