@@ -165,9 +165,9 @@ public class SignUpActivity extends AppCompatActivity {
                 //"(?=.*[a-z])" +         //at least 1 lower case letter
                 //"(?=.*[A-Z])" +         //at least 1 upper case letter
                 "(?=.*[a-zA-Z])" +      //any letter
-                "(?=.*[@#$%^&+=!])" +    //at least 1 special character
+               // "(?=.*[@#$%^&+=!])" +    //at least 1 special character
                 "(?=\\S+$)" +           //no white spaces
-                ".{4,}" +               //at least 4 characters
+                ".{6,}" +               //at least 4 characters
                 "$";
 
         if (passwordStr.isEmpty()){
@@ -175,7 +175,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             return false;
         }else if(!passwordStr.matches(passwordPattern)){
-            password.setError("Invalid pattern");
+            password.setError("Include at least 6 characters with no space between ");
             return false;
         }
         else{
