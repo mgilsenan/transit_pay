@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Welcome"
+        android:textStyle="bold"
+        android:textColor="@color/jungleGreen"
         android:textSize="40sp"
         android:transitionName="@string/welcome_trans"/>
 
@@ -21,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login to your account!"
+        android:textColor="@color/jungleGreen"
         android:textSize="18dp"
         android:transitionName="@string/message_trans"/>
 
