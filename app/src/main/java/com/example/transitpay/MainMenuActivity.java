@@ -1,6 +1,5 @@
 package com.example.transitpay;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -100,7 +99,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // set the menu icon of the page with layout xml
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.logout_menu, menu);
+        inflater.inflate(R.menu.profile_menu, menu);
         return true;
     }
 

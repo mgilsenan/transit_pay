@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputLayout;
-
 //TODO display user profile in list view.
 public class ActiveAccessActivity extends AppCompatActivity {
 
@@ -23,7 +21,7 @@ public class ActiveAccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_access);
 
-        mainMenuButton=findViewById(R.id.mainMenuButton);
+        mainMenuButton=findViewById(R.id.saveBn);
         profile = findViewById(R.id.userProfileTxt);
 
         displayProfile();
