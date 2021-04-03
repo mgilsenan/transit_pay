@@ -108,8 +108,10 @@ public class ProfileActivity extends AppCompatActivity {
                                 // delete old data and set the new data
                                 dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
                                 dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
-                                dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
-                                dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
+                                //dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
+                                dataSnapshot.child(currentPhone).child("newEmail").getRef().setValue(emailStr);
+                                // TODO: if phone number changed, the node reference also needs to change
+                                // TODO: create a new user with all the field value is copied
                                 dataSnapshot.child(currentPhone).child("phone").getRef().removeValue();
                                 dataSnapshot.child(currentPhone).child("phone").getRef().setValue(phoneStr);
 

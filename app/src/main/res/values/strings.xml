@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Transit Pay</string>
     <string name="password_trans">password_trans</string>
-    <string name="phone_number_trans">phone_number_trans</string>
+    <string name="email_trans">email_trans</string>
     <string name="continue_trans">continue_trans</string>
     <string name="signUp_login_trans">signUp_login_trans</string>
     <string name="welcome_trans">welcome_trans</string>

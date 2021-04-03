@@ -10,9 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button callSignUpBtn, continueBtn,forgetPasswordBtn;
     TextView welcome;
-    TextInputLayout phone, password;
+    TextInputLayout email, password;
 
     FirebaseDatabase rootNode;
     DatabaseReference reference;
@@ -75,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         continueBtn = findViewById(R.id.loginContinueBtn);
         forgetPasswordBtn=findViewById(R.id.forgetPasswordBtn);
         welcome = findViewById(R.id.welcome);
-        phone = findViewById(R.id.loginPhone);
+        email = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
         user = new User();
 
@@ -90,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                 // array size must be same as the number of the elements
                 //TODO fixed hardcoded
                 Pair[] pairs = new Pair[5];
-                pairs[0] = new Pair<View, String> (phone, "phone_number_trans");
+                pairs[0] = new Pair<View, String> (email, "email_trans");
                 pairs[1] = new Pair<View, String> (password, "password_trans");
                 pairs[2] = new Pair<View, String> (welcome, "welcome_trans");
                 pairs[3] = new Pair<View, String> (continueBtn, "continue_trans");
@@ -168,14 +165,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private Boolean validatePhone() {
-        String val = phone.getEditText().getText().toString();
+        String val = email.getEditText().getText().toString();
         if (val.isEmpty()) {
-            phone.setError("Field cannot be empty");
+            email.setError("Field cannot be empty");
             Log.d(TAG, "validate phone: " + val);
             return false;
         } else {
-            phone.setError(null);
-            phone.setErrorEnabled(false);
+            email.setError(null);
+            email.setErrorEnabled(false);
             return true;
         }
     }
@@ -195,74 +192,92 @@ public class LoginActivity extends AppCompatActivity {
 
     private void isUser() {
         //progressBar.setVisibility(View.VISIBLE);
-        final String userEnteredPhone = phone.getEditText().getText().toString().trim();
+        //final String userEnteredPhone = phone.getEditText().getText().toString().trim();
+        final String userEnteredEmail = password.getEditText().getText().toString().trim();
         final String userEnteredPassword = password.getEditText().getText().toString().trim();
         reference = FirebaseDatabase.getInstance().getReference("user");
-        Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
+//        Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
+
+        Query checkUser = reference.orderByChild("email").equalTo(userEnteredEmail);
 
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    Log.d(TAG, "user with input email exit " + userEnteredEmail);
 
                     //TODO we might change the line below------------------------------------------------------------
-                    String phoneFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
-                    if (phoneFromDB.equals(userEnteredPhone)) {
-                        //Log.d(TAG, "password Equal " + userEnteredPhone);
+//                    String phoneFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+                    String emailFromDB = dataSnapshot.child(userEnteredEmail).child("email").getValue(String.class);
 
+                    fAuth.signInWithEmailAndPassword(userEnteredEmail,userEnteredPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // use the password given by the user and user the email that is stored in the database based on given phone number
+                            // if the password in database does not match with user provided password then fail.
+                            // if the email stored in the authentication match with real time database email then success fully login
+                            if(task.isSuccessful()){
+                                //
+                                Log.d(TAG, "login success  " + userEnteredEmail);
+                                if(fAuth.getCurrentUser().isEmailVerified()){
+                                    email.setError(null);
+                                    email.setErrorEnabled(false);
 
-                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class).trim();
+                                    boolean loginSuccess = false;
+                                    Iterable<DataSnapshot> usersList = dataSnapshot.getChildren();
+                                    for (DataSnapshot i : usersList){
+                                        // look up the right user
+                                        if (i.child("email").getValue(String.class) == userEnteredEmail || i.child("newEmail").getValue(String.class) == userEnteredEmail){
+                                            // the code support if the user request changing email, but later reset back to initial email by mistake
+                                            // TODO: in ProfilePage the new email needs to be stored under newEmail
+                                            String nameFromDB = i.child("name").getValue(String.class);
+                                            String phoneNoFromDB = i.child("phone").getValue(String.class);
 
-                        fAuth.signInWithEmailAndPassword(emailFromDB,userEnteredPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // use the password given by the user and user the email that is stored in the database based on given phone number
-                                // if the password in database does not match with user provided password then fail.
-                                // if the email stored in the authentication match with real time database email then success fully login
-                                if(task.isSuccessful()){
-                                    //
-                                    Log.d(TAG, "login success  " + userEnteredPhone);
-                                    if(fAuth.getCurrentUser().isEmailVerified()){
-                                        phone.setError(null);
-                                        phone.setErrorEnabled(false);
+                                            Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                            intent.putExtra("Phone number", phoneNoFromDB);
+                                            // save user phone number upon loggin
+                                            user.copy(new User(nameFromDB, userEnteredEmail, phoneNoFromDB, userEnteredPassword));
+                                            startActivity(intent);
+                                            finish();
 
-                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
-                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
-                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
-
-                                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                        intent.putExtra("Phone number", phoneNoFromDB);
-                                        // save user phone number upon loggin
-                                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
-                                        startActivity(intent);
-                                        finish();
+                                        }
                                     }
-                                    else{
-                                        Toast.makeText(LoginActivity.this, "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
-                                    }
+                                    if(!loginSuccess)  Toast.makeText(LoginActivity.this, "Your Email Address has been changed", Toast.LENGTH_SHORT).show();
 
                                 }
-
-                                else {
-                                    Log.d(TAG, "password not equal " + userEnteredPhone);
-
-                                    // progressBar.setVisibility(View.GONE);
-                                    password.setError("User Not Exit or Incorrect Password");
-                                    password.requestFocus();
-
+                                else{
+                                    Toast.makeText(LoginActivity.this, "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
                                 }
+
                             }
-                        });
 
+                            else {
+                                Log.d(TAG, "password not equal " + userEnteredEmail);
 
-                    }
+                                // progressBar.setVisibility(View.GONE);
+                                password.setError("User Not Exit or Incorrect Password");
+                                password.requestFocus();
+
+                            }
+                        }
+                    });
+//                    if (phoneFromDB.equals(userEnteredPhone)) {
+//                        //Log.d(TAG, "password Equal " + userEnteredPhone);
+//
+//
+//                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class).trim();
+//
+//
+//
+//
+//                    }
                 } else {
-                    Log.d(TAG, "no snapshot " + userEnteredPhone);
+                    Log.d(TAG, "no snapshot " + userEnteredEmail);
 
                     //progressBar.setVisibility(View.GONE);
-                    phone.setError("No such User exist");
-                    phone.requestFocus();
+                    email.setError("No such User exist");
+                    email.requestFocus();
                 }
             }
 

@@ -56,7 +56,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:transitionName="@string/email_trans"/>
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:transitionName="@string/phone_number_trans"/>
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

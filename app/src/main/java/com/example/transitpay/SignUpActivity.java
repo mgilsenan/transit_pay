@@ -85,10 +85,10 @@ public class SignUpActivity extends AppCompatActivity {
                     rootNode = FirebaseDatabase.getInstance();
                     childNode = rootNode.getReference("user");
 
-                    String nameStr = name.getEditText().getText().toString();
-                    String emailStr = email.getEditText().getText().toString();
-                    String passwordStr = password.getEditText().getText().toString();
-                    String phoneStr = phone.getEditText().getText().toString();
+                    String nameStr = name.getEditText().getText().toString().trim();
+                    String emailStr = email.getEditText().getText().toString().trim();
+                    String passwordStr = password.getEditText().getText().toString().trim();
+                    String phoneStr = phone.getEditText().getText().toString().trim();
 
                     fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -99,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     if(task.isSuccessful()) {
                                         Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
                                                 Toast.LENGTH_LONG).show();
-                                        User user = new User(nameStr, emailStr, phoneStr);
+                                        User user = new User(nameStr, emailStr, phoneStr, passwordStr);
 
                                         childNode.child(phoneStr).setValue(user);
 

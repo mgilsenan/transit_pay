@@ -37,16 +37,16 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginPhone"
+            android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone number"
+            android:hint="Email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:transitionName="@string/phone_number_trans"/>
+                android:inputType="textEmailAddress"
+                android:transitionName="@string/email_trans"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
