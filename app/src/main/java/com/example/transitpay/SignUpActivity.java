@@ -85,10 +85,10 @@ public class SignUpActivity extends AppCompatActivity {
                     rootNode = FirebaseDatabase.getInstance();
                     childNode = rootNode.getReference("user");
 
-                    String nameStr = name.getEditText().getText().toString();
-                    String emailStr = email.getEditText().getText().toString();
-                    String passwordStr = password.getEditText().getText().toString();
-                    String phoneStr = phone.getEditText().getText().toString();
+                    String nameStr = name.getEditText().getText().toString().trim();
+                    String emailStr = email.getEditText().getText().toString().trim();
+                    String passwordStr = password.getEditText().getText().toString().trim();
+                    String phoneStr = phone.getEditText().getText().toString().trim();
 
                     fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

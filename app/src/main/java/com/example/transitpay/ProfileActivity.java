@@ -110,6 +110,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
                                 dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
                                 dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
+
+                                // to update the phone number
+                                // delete current user from real time database,
                                 dataSnapshot.child(currentPhone).child("phone").getRef().removeValue();
                                 dataSnapshot.child(currentPhone).child("phone").getRef().setValue(phoneStr);
 
