@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="80dp">
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -129,22 +129,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SAVE CHANGES"
+        android:textColor="#FFEB3B"
+        android:textSize="22sp"
+        android:background="@color/jungleGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goBackBn"
         app:layout_constraintVertical_bias="0.868" />
 
-    <Button
-        android:textAlignment="center"
-        android:id="@+id/goBackBn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GO BACK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfileTxt"
-        app:layout_constraintVertical_bias="0.868" />
+
 
 </LinearLayout>

@@ -36,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView profile;
     Button saveButton;
-    Button goBackButton;
+//    Button goBackButton;
     EditText name;
     EditText phone;
     EditText email;
@@ -51,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         // hook
         profile = findViewById(R.id.userProfileTxt);
         saveButton = findViewById(R.id.saveBn);
-        goBackButton = findViewById(R.id.goBackBn);
+//        goBackButton = findViewById(R.id.goBackBn);
         name = findViewById(R.id.nameTxt);
         phone = findViewById(R.id.phoneTxt);
         email = findViewById(R.id.emailTxt);

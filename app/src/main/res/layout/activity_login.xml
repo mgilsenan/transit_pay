@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
 
-        
+
 
     </LinearLayout>
 
@@ -67,8 +67,8 @@
         android:id="@+id/loginContinueBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/jungleGreen"
         android:text="Login"
+        android:backgroundTint="@color/jungleGreen"
         android:textColor="#FFEB3B"
         android:textSize="24sp"
         android:transitionName="@string/continue_trans" />
@@ -81,6 +81,13 @@
         android:background="#00000000"
         android:textColor="@color/black"
         android:transitionName="@string/signUp_login_trans"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@color/jungleGreen"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"></View>
     <Button
         android:id="@+id/forgetPasswordBtn"
         android:layout_width="match_parent"

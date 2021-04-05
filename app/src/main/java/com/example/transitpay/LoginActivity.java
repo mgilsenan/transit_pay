@@ -89,12 +89,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 // array size must be same as the number of the elements
                 //TODO fixed hardcoded
-                Pair[] pairs = new Pair[5];
+                Pair[] pairs = new Pair[4];
                 pairs[0] = new Pair<View, String> (phone, "phone_number_trans");
                 pairs[1] = new Pair<View, String> (password, "password_trans");
-                pairs[2] = new Pair<View, String> (welcome, "welcome_trans");
-                pairs[3] = new Pair<View, String> (continueBtn, "continue_trans");
-                pairs[4] = new Pair<View, String> (callSignUpBtn, "signUp_login_trans");
+                pairs[2] = new Pair<View, String> (continueBtn, "continue_trans");
+                pairs[3] = new Pair<View, String> (callSignUpBtn, "signUp_login_trans");
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
