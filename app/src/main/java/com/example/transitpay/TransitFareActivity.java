@@ -40,7 +40,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String oneTrip="Single Trip Fare";
 
-                String price="$3.50";
+                String price="3.50";
 
                 Bundle bundle = new Bundle();
 
@@ -62,7 +62,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String twoTrip="Two Trip Fare";
 
-                String price="$6.50";
+                String price="6.50";
 
                 Bundle bundle = new Bundle();
 
@@ -84,7 +84,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String tenTrip="10 Trip Fare";
 
-                String price="$29.50";
+                String price="29.50";
 
                 Bundle bundle = new Bundle();
 
@@ -106,7 +106,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String threeTrip="Three Day Fare";
 
-                String price="$20.00";
+                String price="20.00";
 
                 Bundle bundle = new Bundle();
 
@@ -128,7 +128,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String weekFare = "Weekly Fare";
 
-                String price="$27.25";
+                String price="27.25";
 
                 Bundle bundle = new Bundle();
 
@@ -150,7 +150,7 @@ public class TransitFareActivity extends AppCompatActivity {
 
                 String weekFare = "Monthly Fare";
 
-                String price="$88.50";
+                String price="88.50";
 
                 Bundle bundle = new Bundle();
 
