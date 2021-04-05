@@ -115,6 +115,29 @@ public class ProfileActivity extends AppCompatActivity {
 
                                 // update email in authentication
                                 FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
+//                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailStr,LoginActivity.getUser().getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                if(task.isSuccessful()) {
+//                                                    Toast.makeText(ProfileActivity.this, "Email update is Successful, Please Check Your Email for Verification",
+//                                                            Toast.LENGTH_LONG).show();
+//                                                    LoginActivity.getUser().setEmail(emailStr);
+//
+//                                                }
+//                                                else {
+//                                                    Toast.makeText(ProfileActivity.this, task.getException().getMessage(),
+//                                                            Toast.LENGTH_LONG).show();
+//                                                }
+//
+//
+//                                            }
+//                                        });
+//                                    }
+//                                });
+
 
                                 // Update local user obj
                                 LoginActivity.getUser().setName(name.toString());

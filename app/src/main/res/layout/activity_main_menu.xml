@@ -10,9 +10,9 @@
 
     <Button
         android:id="@+id/LocationButton"
-        android:layout_width="205dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="50dp"
         android:text="Location"
         android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
@@ -22,7 +22,7 @@
 
     <Button
         android:id="@+id/citylinesButton"
-        android:layout_width="215dp"
+        android:layout_width="210dp"
         android:layout_height="55dp"
         android:layout_marginBottom="20dp"
         android:text="City Transit Lines"
@@ -35,8 +35,8 @@
 
     <Button
         android:id="@+id/triphistoryButton"
-        android:layout_width="217dp"
-        android:layout_height="53dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="20dp"
         android:text="Trip history"
         android:textColor="#050505"
@@ -49,28 +49,16 @@
         android:id="@+id/purchasefareButton"
         android:layout_width="210dp"
         android:layout_height="55dp"
+        android:layout_marginTop="300dp"
         android:layout_marginBottom="20dp"
         android:text="Purchase Fare"
         android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
-        app:layout_constraintEnd_toEndOf="@+id/activationcardButton"
-        app:layout_constraintStart_toStartOf="@+id/activationcardButton" />
-
-    <Button
-        android:id="@+id/activationcardButton"
-        android:layout_width="211dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginBottom="20dp"
-        android:text="Card Activation"
-        android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
-        app:iconTint="#070707"
-        app:layout_constraintBottom_toTopOf="@+id/purchasefareButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

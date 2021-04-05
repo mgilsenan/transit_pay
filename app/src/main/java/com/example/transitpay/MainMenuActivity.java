@@ -16,7 +16,7 @@ public class MainMenuActivity extends AppCompatActivity {
     protected Button locationButton;
     protected Button purchaseButton;
     protected Button citylinesButton;
-    protected Button activateButton;
+//    protected Button activateButton;
 
 
     @Override
@@ -30,7 +30,7 @@ public class MainMenuActivity extends AppCompatActivity {
         locationButton=findViewById(R.id.LocationButton);
         citylinesButton=findViewById(R.id.citylinesButton);
         purchaseButton=findViewById(R.id.purchasefareButton);
-        activateButton = findViewById(R.id.activationcardButton);
+//        activateButton = findViewById(R.id.activationcardButton);
 
         triphistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,12 +59,12 @@ public class MainMenuActivity extends AppCompatActivity {
                 goToCityLinesActivity();
             }
         });
-        activateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToActivateCardActivity();
-            }
-        });
+//        activateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goToActivateCardActivity();
+//            }
+//        });
 
 
     }
@@ -107,7 +107,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent = null; // value of the intent is depends on the user selected button option
         switch(item.getItemId()){
-            case R.id.Logout:
+            case R.id.logout:
                 Toast.makeText(this, "Logged out from account", Toast.LENGTH_LONG).show();
                 // destroy local user obj and return to login activity
                 LoginActivity.getUser().setPhone("");
@@ -117,8 +117,11 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            case R.id.Profile:
+            case R.id.profile:
                 intent= new Intent(MainMenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            case R.id.cardActivation:
+                intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);

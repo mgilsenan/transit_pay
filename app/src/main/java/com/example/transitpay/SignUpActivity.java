@@ -100,9 +100,10 @@ public class SignUpActivity extends AppCompatActivity {
                                         Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
                                                 Toast.LENGTH_LONG).show();
                                         User user = new User(nameStr, emailStr, phoneStr);
+                                        user.setPassword(passwordStr);
 
                                         childNode.child(phoneStr).setValue(user);
-
+                                        childNode.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
                                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();

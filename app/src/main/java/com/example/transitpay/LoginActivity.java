@@ -219,13 +219,14 @@ public class LoginActivity extends AppCompatActivity {
                                 // use the password given by the user and user the email that is stored in the database based on given phone number
                                 // if the password in database does not match with user provided password then fail.
                                 // if the email stored in the authentication match with real time database email then success fully login
-                                if(task.isSuccessful()){
-                                    //
-                                    Log.d(TAG, "login success  " + userEnteredPhone);
-                                    if(fAuth.getCurrentUser().isEmailVerified()){
+                                if(dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")) Log.d(TAG, "loginBefore");
+                                if(task.isSuccessful() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
+                                    //TODO: If the current user updated email address verification email is not sent by firebase auth
+
+                                    if(fAuth.getCurrentUser().isEmailVerified() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
                                         phone.setError(null);
                                         phone.setErrorEnabled(false);
-
+                                        Log.d(TAG, "login success  " + userEnteredPhone);
                                         String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
                                         String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
                                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
@@ -235,6 +236,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("Phone number", phoneNoFromDB);
                                         // save user phone number upon loggin
                                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
                                         startActivity(intent);
                                         finish();
                                     }
