@@ -120,9 +120,11 @@ public class MainMenuActivity extends AppCompatActivity {
             case R.id.profile:
                 intent= new Intent(MainMenuActivity.this, ProfileActivity.class);
                 startActivity(intent);
+                return true;
             case R.id.cardActivation:
                 intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
                 startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

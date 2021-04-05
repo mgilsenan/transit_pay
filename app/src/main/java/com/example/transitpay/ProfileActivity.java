@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     private final static String TAG = "ProfileActivity";
 
     TextView profile;
-    Button mainMenuButton;
+    Button saveButton;
     Button goBackButton;
     EditText name;
     EditText phone;
@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // hook
         profile = findViewById(R.id.userProfileTxt);
-        mainMenuButton = findViewById(R.id.saveBn);
+        saveButton = findViewById(R.id.saveBn);
         goBackButton = findViewById(R.id.goBackBn);
         name = findViewById(R.id.nameTxt);
         phone = findViewById(R.id.phoneTxt);
@@ -59,10 +59,10 @@ public class ProfileActivity extends AppCompatActivity {
         displayProfile();
 
         // disable editing  
-        name.setInputType(InputType.TYPE_NULL);
+        phone.setInputType(InputType.TYPE_NULL);
 
 
-        mainMenuButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -106,37 +106,18 @@ public class ProfileActivity extends AppCompatActivity {
                                 // look up the user account in the database
                                 String phoneFromDB = dataSnapshot.child(currentPhone).child("phone").getValue(String.class);
                                 // delete old data and set the new data
-                                dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
-                                dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
-                                dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
-                                dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
-                                dataSnapshot.child(currentPhone).child("phone").getRef().removeValue();
-                                dataSnapshot.child(currentPhone).child("phone").getRef().setValue(phoneStr);
+                                if (nameStr != ""){
+                                    dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
+                                    dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
+                                }
+                                if (emailStr != ""){
+                                    dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
+                                    dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
+                                }
+
 
                                 // update email in authentication
                                 FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
-//                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailStr,LoginActivity.getUser().getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<Void> task) {
-//                                                if(task.isSuccessful()) {
-//                                                    Toast.makeText(ProfileActivity.this, "Email update is Successful, Please Check Your Email for Verification",
-//                                                            Toast.LENGTH_LONG).show();
-//                                                    LoginActivity.getUser().setEmail(emailStr);
-//
-//                                                }
-//                                                else {
-//                                                    Toast.makeText(ProfileActivity.this, task.getException().getMessage(),
-//                                                            Toast.LENGTH_LONG).show();
-//                                                }
-//
-//
-//                                            }
-//                                        });
-//                                    }
-//                                });
 
 
                                 // Update local user obj
@@ -164,9 +145,12 @@ public class ProfileActivity extends AppCompatActivity {
 
                     });
 
+                }else if(countUpdate <= 0){
+                    Toast.makeText(ProfileActivity.this, "No updates", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(ProfileActivity.this, "empty fields found", Toast.LENGTH_LONG).show();
                 }
 
-                //goToMainMenuActivity();
             }
         });
 
