@@ -5,8 +5,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -41,15 +43,28 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+    // local user
     public static User user ;
+    public static SharedPreferences pref;
+    public static final String myPreference = "myPreference";
+    public static final String userPhone = "serPhoneKey";
+    public static final String userPassword = "userPasswordKey";
+    private String phoneStr;
+    private String passwordStr;
 
+
+
+    // UI
     Button callSignUpBtn, continueBtn,forgetPasswordBtn;
     TextView welcome;
     TextInputLayout phone, password;
 
-    FirebaseDatabase rootNode;
+   // firebase
     DatabaseReference reference;
     FirebaseAuth fAuth;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +73,13 @@ public class LoginActivity extends AppCompatActivity {
 
         setUp();
 
-        callSignUpBtnAction();
-
-        continueBtnAction();
+//        callSignUpBtnAction();
+//
+//        continueBtnAction();
 
         forgetPasswordBtnAction();
 
-        fAuth = FirebaseAuth.getInstance();
+
 
 
     }
@@ -74,10 +89,11 @@ public class LoginActivity extends AppCompatActivity {
         callSignUpBtn = findViewById(R.id.signUpBtn);
         continueBtn = findViewById(R.id.loginContinueBtn);
         forgetPasswordBtn=findViewById(R.id.forgetPasswordBtn);
-        welcome = findViewById(R.id.welcome);
+        //welcome = findViewById(R.id.welcome);
         phone = findViewById(R.id.loginPhone);
         password = findViewById(R.id.loginPassword);
         user = new User();
+        fAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -105,6 +121,26 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // If the user's info is saved in shared preference file then automatically sign in
+    @Override
+    protected void onResume() {
+        super.onResume();
+        callSignUpBtnAction();
+        pref = getSharedPreferences(myPreference, Context.MODE_PRIVATE);
+
+        String empty = pref.getString(userPhone, "");
+        Log.d(TAG, "the value of empty is: " + empty);
+        if (!(empty.matches(""))){
+            Log.d(TAG,"not empty");
+            phoneStr = pref.getString(userPhone,"");
+            passwordStr = pref.getString(userPassword, "");
+            isUser(true);
+        }else{
+            Log.d(TAG," empty");
+            continueBtnAction();
+        }
+    }
+
     protected void continueBtnAction(){
 
         // @TODO Main display activity
@@ -116,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                     toast = Toast.makeText(LoginActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    isUser();
+                    isUser(false);
                 }
 
             }
@@ -142,6 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                         fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                clearUser(); // if the user reset password then user need to login again
                                 Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -192,10 +229,25 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void isUser() {
+    private void isUser(boolean existingUser) {
         //progressBar.setVisibility(View.VISIBLE);
-        final String userEnteredPhone = phone.getEditText().getText().toString().trim();
-        final String userEnteredPassword = password.getEditText().getText().toString().trim();
+
+        String userEnteredPhone ;
+        String userEnteredPassword ;
+        if(existingUser){
+            Log.d(TAG,"existing user checked");
+
+            userEnteredPhone = phoneStr;
+            userEnteredPassword = passwordStr;
+            phone.getEditText().setText(userEnteredPhone);
+            password.getEditText().setText(userEnteredPassword);
+        }else{
+            userEnteredPhone = phone.getEditText().getText().toString().trim();
+            userEnteredPassword = password.getEditText().getText().toString().trim();
+        }
+
+        Log.d(TAG,userEnteredPhone);
+        Log.d(TAG,userEnteredPassword);
         reference = FirebaseDatabase.getInstance().getReference("user");
         Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
 
@@ -235,6 +287,8 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("Phone number", phoneNoFromDB);
                                         // save user phone number upon loggin
                                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        user.setPassword(userEnteredPassword);
+                                        saveUser();
                                         dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
                                         startActivity(intent);
                                         finish();
@@ -277,5 +331,24 @@ public class LoginActivity extends AppCompatActivity {
 
     public static User getUser(){return user == null ? null: user;}
 
+
+    // saving local user information in shared preference file
+    public static void saveUser(){
+        clearUser();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(userPhone, user.getPhone());
+        editor.putString(userPassword, user.getPassword());
+        editor.commit();
+    }
+
+    // clear user information in shared preference file
+    public static void clearUser(){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(userPhone, "");
+        editor.putString(userPassword, "");
+        editor.commit();
+
+
+    }
 
 }

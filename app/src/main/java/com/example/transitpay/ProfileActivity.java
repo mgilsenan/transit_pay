@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -124,6 +125,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 LoginActivity.getUser().setName(name.toString());
                                 LoginActivity.getUser().setName(phone.toString());
                                 LoginActivity.getUser().setName(email.toString());
+                                // update shared preference
+                                LoginActivity.saveUser();
                                 Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
 
 
@@ -222,6 +225,13 @@ public class ProfileActivity extends AppCompatActivity {
                 LoginActivity.getUser().setPhone("");
                 LoginActivity.getUser().setName("");
                 LoginActivity.getUser().setEmail("");
+                LoginActivity.clearUser(); // removed the user in the preference file
+
+                SharedPreferences pref = getSharedPreferences(LoginActivity.myPreference, Context.MODE_PRIVATE);
+                String empty = pref.getString(LoginActivity.userPhone, "");
+                String empty2 = pref.getString(LoginActivity.userPassword, "");
+                Log.d(TAG,"the value of shared preference after LogOut is: " + empty );
+                Log.d(TAG,"the value of shared preference after LogOut is: " + empty2 );
                 intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

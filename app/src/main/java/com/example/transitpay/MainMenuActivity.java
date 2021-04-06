@@ -2,8 +2,11 @@ package com.example.transitpay;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +15,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainMenuActivity extends AppCompatActivity {
+
+    private static String TAG = "MainMenuActivity";
+
     protected Button triphistoryButton;
     protected Button locationButton;
     protected Button purchaseButton;
@@ -113,6 +119,14 @@ public class MainMenuActivity extends AppCompatActivity {
                 LoginActivity.getUser().setPhone("");
                 LoginActivity.getUser().setName("");
                 LoginActivity.getUser().setEmail("");
+
+                LoginActivity.clearUser(); // removed the user in the preference file
+
+                SharedPreferences pref = getSharedPreferences(LoginActivity.myPreference, Context.MODE_PRIVATE);
+                String empty = pref.getString(LoginActivity.userPhone, "");
+                String empty2 = pref.getString(LoginActivity.userPassword, "");
+                Log.d(TAG,"the value of shared preference after LogOut is: " + empty );
+                Log.d(TAG,"the value of shared preference after LogOut is: " + empty2 );
                 intent = new Intent(MainMenuActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
