@@ -18,9 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 // TODO Refine UI
 
@@ -30,12 +33,12 @@ public class SignUpActivity extends AppCompatActivity {
     TextView welcome;
     TextInputLayout email, password, name, phone;
     FirebaseAuth fAuth;
-    String userID;
+    private static Boolean flag; // if the phone number exists in the database it sets to true
     final static String TAG = "SignUpActivity";
 
 
     FirebaseDatabase rootNode;
-    DatabaseReference childNode;
+    DatabaseReference reference;
 
     private static final int passwordLength = 6;
 
@@ -68,6 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         phone = findViewById(R.id.phone);
 
+
     }
 
     public void continueBtnAction(){
@@ -83,42 +87,66 @@ public class SignUpActivity extends AppCompatActivity {
                     toast.show();
                 }else{
                     rootNode = FirebaseDatabase.getInstance();
-                    childNode = rootNode.getReference("user");
+                    reference = rootNode.getReference("user");
 
-                    String nameStr = name.getEditText().getText().toString();
-                    String emailStr = email.getEditText().getText().toString();
-                    String passwordStr = password.getEditText().getText().toString();
-                    String phoneStr = phone.getEditText().getText().toString();
 
-                    fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    String nameStr = name.getEditText().getText().toString().trim();
+                    String emailStr = email.getEditText().getText().toString().trim();
+                    String passwordStr = password.getEditText().getText().toString().trim();
+                    String phoneStr = phone.getEditText().getText().toString().trim();
+
+                    Query checkUser = reference.orderByChild("phone").equalTo(phoneStr);
+
+                    Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
+
+                    checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
-                                                Toast.LENGTH_LONG).show();
-                                        User user = new User(nameStr, emailStr, phoneStr);
-                                        user.setPassword(passwordStr);
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Log.d(TAG, "the phone number entered is found"+phoneStr);
+                                phone.setError(" phone number is  already taken by other user \n " +
+                                        "delete existing account");
 
-                                        childNode.child(phoneStr).setValue(user);
-                                        childNode.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+                            }
+                            else{
+                                Log.d(TAG, "the phone number entered is not found"+phoneStr);
+                                fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()) {
+                                                    Toast.makeText(SignUpActivity.this, "Request sent, Please Check Your Email for Verification",
+                                                            Toast.LENGTH_LONG).show();
+                                                    User user = new User(nameStr, emailStr, phoneStr);
+                                                    user.setPassword(passwordStr);
+
+                                                    reference.child(phoneStr).setValue(user);
+                                                    reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
+                                                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                                else {
+                                                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+
+                                            }
+                                        });
                                     }
-                                    else {
-                                        Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
-                                                Toast.LENGTH_LONG).show();
-                                    }
+                                });
 
+                            }
 
-                                }
-                            });
                         }
-                    });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // do nothing.
+                        }
 
+                    });
 
                 }
 
@@ -126,6 +154,42 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
+
+//    // return true if the phone number is taken by another user
+//    private boolean isPhoneTaken(String phoneStr) {
+//        Query checkUser = reference.orderByChild("phone").equalTo(phoneStr);
+//
+//        Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
+////        flag = (checkUser.equals(phoneStr)) ;
+////        Log.d(TAG, "the flag is "+flag);
+////        Log.d(TAG, "the checker is "+checkUser.toString());
+//        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    Log.d(TAG, "the phone number entered is found"+phoneStr);
+//
+//                    flag = true;
+//                }
+//                else{
+//                    Log.d(TAG, "the phone number entered is not found"+phoneStr);
+//
+//                    flag = false;
+//                }
+//                Log.d(TAG, "the phone number entered is not found"+phoneStr);
+//
+//            }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError error) {
+//            // do nothing.
+//        }
+//
+//    });
+//
+//        return flag;
+//}
+
 
     private Boolean isNameValid(){
         String nameStr = name.getEditText().getText().toString();
@@ -195,8 +259,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             return false;
         }else{
-            phone.setError(null);
-            phone.setErrorEnabled(false);
+//            phone.setError(null);
+//            phone.setErrorEnabled(false);
             return true;
         }
     }
