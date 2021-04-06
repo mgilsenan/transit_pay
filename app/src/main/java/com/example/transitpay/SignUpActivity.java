@@ -95,46 +95,66 @@ public class SignUpActivity extends AppCompatActivity {
                     String passwordStr = password.getEditText().getText().toString().trim();
                     String phoneStr = phone.getEditText().getText().toString().trim();
 
-                    Query checkUser = reference.orderByChild("phone").equalTo(phoneStr);
+                    Query checkUserPhone = reference.orderByChild("phone").equalTo(phoneStr);
 
                     Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
 
-                    checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    checkUserPhone.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Log.d(TAG, "the phone number entered is found"+phoneStr);
                                 phone.setError(" phone number is  already taken by other user \n " +
-                                        "delete existing account");
+                                        "delete existing account and try again");
 
                             }
                             else{
                                 Log.d(TAG, "the phone number entered is not found"+phoneStr);
-                                fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                                Query checkUserEmail = reference.orderByChild("email").equalTo(emailStr);
+                                checkUserEmail.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()) {
-                                                    Toast.makeText(SignUpActivity.this, "Request sent, Please Check Your Email for Verification",
-                                                            Toast.LENGTH_LONG).show();
-                                                    User user = new User(nameStr, emailStr, phoneStr);
-                                                    user.setPassword(passwordStr);
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()){
+                                            Log.d(TAG,"the email is found " + emailStr);
+                                            email.setError(" Email is already taken by other user \n " +
+                                                    "delete existing account and try again");
+                                        }else{
+                                            Log.d(TAG, "the email entered is not found "+emailStr);
+                                            fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()) {
+                                                                Toast.makeText(SignUpActivity.this, "Request sent, Please Check Your Email for Verification",
+                                                                        Toast.LENGTH_LONG).show();
+                                                                User user = new User(nameStr, emailStr, phoneStr);
+                                                                user.setPassword(passwordStr);
 
-                                                    reference.child(phoneStr).setValue(user);
-                                                    reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
-                                                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                                else {
-                                                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
-                                                            Toast.LENGTH_LONG).show();
-                                                }
+                                                                reference.child(phoneStr).setValue(user);
+                                                                reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
+                                                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                            else {
+                                                                Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
+                                                                        Toast.LENGTH_LONG).show();
+                                                            }
 
-                                            }
-                                        });
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // do nothing
                                     }
                                 });
 
