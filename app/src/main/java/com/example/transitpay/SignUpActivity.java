@@ -104,8 +104,9 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Log.d(TAG, "the phone number entered is found"+phoneStr);
-                                phone.setError(" phone number is  already taken by other user \n " +
+                                phone.setError("phone number is  already taken by other user \n" +
                                         "delete existing account and try again");
+                                phone.requestFocus();
 
                             }
                             else{
@@ -117,8 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.exists()){
                                             Log.d(TAG,"the email is found " + emailStr);
-                                            email.setError(" Email is already taken by other user \n " +
+                                            email.setError("Email is already taken by other user \n" +
                                                     "delete existing account and try again");
+                                            email.requestFocus();
                                         }else{
                                             Log.d(TAG, "the email entered is not found "+emailStr);
                                             fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -174,41 +176,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
-
-//    // return true if the phone number is taken by another user
-//    private boolean isPhoneTaken(String phoneStr) {
-//        Query checkUser = reference.orderByChild("phone").equalTo(phoneStr);
-//
-//        Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
-////        flag = (checkUser.equals(phoneStr)) ;
-////        Log.d(TAG, "the flag is "+flag);
-////        Log.d(TAG, "the checker is "+checkUser.toString());
-//        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    Log.d(TAG, "the phone number entered is found"+phoneStr);
-//
-//                    flag = true;
-//                }
-//                else{
-//                    Log.d(TAG, "the phone number entered is not found"+phoneStr);
-//
-//                    flag = false;
-//                }
-//                Log.d(TAG, "the phone number entered is not found"+phoneStr);
-//
-//            }
-//
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError error) {
-//            // do nothing.
-//        }
-//
-//    });
-//
-//        return flag;
-//}
 
 
     private Boolean isNameValid(){

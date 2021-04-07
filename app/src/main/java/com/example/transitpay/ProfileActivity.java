@@ -1,9 +1,11 @@
 package com.example.transitpay;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,10 +21,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView profile;
     Button saveButton;
-//    Button goBackButton;
+    Button deleteButton;
     EditText name;
     EditText phone;
     EditText email;
@@ -52,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         // hook
         profile = findViewById(R.id.userProfileTxt);
         saveButton = findViewById(R.id.saveBn);
-//        goBackButton = findViewById(R.id.goBackBn);
+        deleteButton = findViewById(R.id.deleteBn);
         name = findViewById(R.id.nameTxt);
         phone = findViewById(R.id.phoneTxt);
         email = findViewById(R.id.emailTxt);
@@ -62,7 +62,64 @@ public class ProfileActivity extends AppCompatActivity {
         // disable editing  
         phone.setInputType(InputType.TYPE_NULL);
 
+        setSaveButton();
 
+        setDeleteButton();
+
+    }
+
+    // we can use security questions
+    private void setDeleteButton() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText deleteAccount =  new EditText(v.getContext());
+                deleteAccount.setInputType(0x00000003);
+                AlertDialog.Builder deleteAccountDialog = new AlertDialog.Builder(v.getContext());
+                deleteAccountDialog.setTitle("Delete account?");
+                deleteAccountDialog.setMessage("Enter your phone number to confirm");
+                deleteAccountDialog.setView(deleteAccount);
+
+                deleteAccountDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //extract the phone to confirm the user.
+                        String phoneStr = deleteAccount.getText().toString().trim();
+                        if (LoginActivity.getUser().getPhone().matches(phoneStr)){
+                            Toast.makeText(ProfileActivity.this, "Your account is deleted", Toast.LENGTH_SHORT).show();
+                            // delete shared preference
+                            LoginActivity.clearUser();
+                            // delete local user obj
+                            LoginActivity.getUser().copy(new User());
+                            displayProfile();
+                            // delete real time database
+                            reference = FirebaseDatabase.getInstance().getReference("user").child(phoneStr);
+                            reference.removeValue();
+                            // delete authentication
+                            FirebaseAuth.getInstance().getCurrentUser().delete();
+                            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        }else{
+                            Toast.makeText(ProfileActivity.this, "Failed to delete phone number miss matched", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                deleteAccountDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //close the dialog
+                    }
+                });
+
+                deleteAccountDialog.create().show();
+            }
+        });
+    }
+
+    private void setSaveButton() {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
                     if (result[i]){
                         countUpdate++;
                     }
-                    if(newInfo[i] == ""){
+                    if(newInfo[i].matches("")){
                         countEmpty++;
                     }
                 }
@@ -96,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     // update database
                     reference = FirebaseDatabase.getInstance().getReference("user");
-                    Query checkUser = reference.orderByChild("phone").equalTo(LoginActivity.getUser().getPhone());
+                    Query checkUser = reference.orderByChild("phone").equalTo(currentPhone);
 
                     checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -104,30 +161,61 @@ public class ProfileActivity extends AppCompatActivity {
                             if (dataSnapshot.exists()) {
                                 Log.d(TAG, "found user: " + phoneStr);
 
-                                // look up the user account in the database
-                                String phoneFromDB = dataSnapshot.child(currentPhone).child("phone").getValue(String.class);
-                                // delete old data and set the new data
-                                if (nameStr != ""){
+                                // check if the new email is taken by other user
+                                if(isEmailChange(emailStr)){
+                                    Query checkUserEmail = reference.orderByChild("email").equalTo(emailStr);
+                                    checkUserEmail.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                Log.d(TAG, " Email is taken by another user " );
+
+                                                //progressBar.setVisibility(View.GONE);
+                                                email.setError("Email entered is user by another account \n" +
+                                                        "delete existing account and try again");
+                                                email.requestFocus();
+                                                Toast.makeText(ProfileActivity.this, "Failed to update", Toast.LENGTH_SHORT).show();
+
+                                            } else{
+                                                Log.d(TAG, " Updated successfully " );
+                                                // accept updating new email address
+                                                // delete old value from real time database and set the new value
+                                                dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
+                                                dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
+                                                dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
+                                                dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
+
+                                                // update email in authentication
+                                                FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
+
+
+                                                // Update local user obj
+                                                LoginActivity.getUser().setName(nameStr);
+                                                LoginActivity.getUser().setName(phoneStr);
+                                                LoginActivity.getUser().setName(emailStr);
+                                                // update shared preference
+                                                LoginActivity.saveUser();
+                                                Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                } else{
+                                    // if Email is not updated but name is updated
                                     dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
                                     dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
+
+                                    // Update local user obj
+                                    LoginActivity.getUser().setName(nameStr);
+                                    // update shared preference
+                                    LoginActivity.saveUser();
+                                    Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
                                 }
-                                if (emailStr != ""){
-                                    dataSnapshot.child(currentPhone).child("email").getRef().removeValue();
-                                    dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
-                                }
-
-
-                                // update email in authentication
-                                FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
-
-
-                                // Update local user obj
-                                LoginActivity.getUser().setName(name.toString());
-                                LoginActivity.getUser().setName(phone.toString());
-                                LoginActivity.getUser().setName(email.toString());
-                                // update shared preference
-                                LoginActivity.saveUser();
-                                Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
 
 
                             } else {
@@ -156,7 +244,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private boolean isEmailChange(String emailStr) {
+        return !LoginActivity.getUser().getEmail().matches(emailStr);
     }
 
     // check the user updated the text box
@@ -166,13 +257,13 @@ public class ProfileActivity extends AppCompatActivity {
         for (int i = 0; i < newInfo.length; i++){
             if (i == 0){
                 // check name
-                result[i] = (LoginActivity.getUser().getName() == newInfo[i])? false:true;
+                result[i] = (LoginActivity.getUser().getName().matches(newInfo[i]))? false:true;
             }else if(i == 1){
                 // check email
-                result[i] = (LoginActivity.getUser().getEmail() == newInfo[i])? false:true;
+                result[i] = (LoginActivity.getUser().getEmail().matches(newInfo[i]))? false:true;
             }else if(i == 2){
                 // check phone
-                result[i] = (LoginActivity.getUser().getPhone() == newInfo[i])? false:true;
+                result[i] = (LoginActivity.getUser().getPhone().matches(newInfo[i]))? false:true;
             }
         }
         return result;
@@ -241,4 +332,9 @@ public class ProfileActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void setText(){
+
+    }
+
 }

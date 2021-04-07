@@ -123,20 +123,47 @@
         android:layout_marginRight="15dp"></View>
 
 
-    <Button
-        android:textAlignment="center"
-        android:id="@+id/saveBn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SAVE CHANGES"
-        android:textColor="#FFEB3B"
-        android:textSize="22sp"
-        android:background="@color/jungleGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goBackBn"
-        app:layout_constraintVertical_bias="0.868" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveBn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            app:backgroundTint="@color/jungleGreen"
+            android:text="SAVE"
+            android:textAlignment="center"
+            android:textColor="#FFEB3B"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/deleteBn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneTxt"
+            app:layout_constraintVertical_bias="0.868" />
+
+        <Button
+            android:id="@+id/deleteBn"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            app:backgroundTint="@android:color/holo_red_dark"
+            android:text="delete account"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/saveBn"
+            app:layout_constraintTop_toBottomOf="@id/phoneTxt"
+            app:layout_constraintVertical_bias="0.868" />
+
+
+    </LinearLayout>
 
 
 
