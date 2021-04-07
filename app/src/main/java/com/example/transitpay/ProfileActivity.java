@@ -171,7 +171,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 Log.d(TAG, "found user: " + phoneStr);
 
                                 // check if the new email is taken by other user
-                                if(isEmailChange(emailStr)){
+                                if(isEmailChange(emailStr) && isEmailValid(email)){
                                     Query checkUserEmail = reference.orderByChild("email").equalTo(emailStr);
                                     checkUserEmail.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -233,7 +233,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                } else{
+                                } else if(isNameChange(nameStr)){
                                     // if Email is not updated but name is updated
                                     dataSnapshot.child(currentPhone).child("name").getRef().removeValue();
                                     dataSnapshot.child(currentPhone).child("name").getRef().setValue(nameStr);
@@ -242,7 +242,11 @@ public class ProfileActivity extends AppCompatActivity {
                                     LoginActivity.getUser().setName(nameStr);
                                     // update shared preference
                                     LoginActivity.saveUser();
+                                    // message to user only email is valid
                                     Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                                } else{
+                                    Toast.makeText(ProfileActivity.this, "no changes", Toast.LENGTH_SHORT).show();
+
                                 }
 
 
@@ -275,8 +279,30 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isNameChange(String nameStr){
+        return !LoginActivity.getUser().getName().matches(nameStr);
+    }
+
     private boolean isEmailChange(String emailStr) {
         return !LoginActivity.getUser().getEmail().matches(emailStr);
+    }
+
+    private Boolean isEmailValid(EditText email){
+        String emailStr = email.getText().toString().trim();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (emailStr.isEmpty()){
+            email.setError("Field cannot be empty");
+            return false;
+        }else if(!emailStr.matches(emailPattern)){
+            email.setError("Invalid pattern");
+            return false;
+        }
+        else
+        {
+            email.setError(null);
+            return true;
+        }
     }
 
     // check the user updated the text box
