@@ -5,11 +5,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,15 +43,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+    // local user
     public static User user ;
+    public static SharedPreferences pref;
+    private static boolean userExist; // if user Login before true
+    public static final String myPreference = "myPreference";
+    public static final String userPhone = "serPhoneKey";
+    public static final String userPassword = "userPasswordKey";
+    private String phoneStr;
+    private String passwordStr;
 
+
+
+    // UI
     Button callSignUpBtn, continueBtn,forgetPasswordBtn;
     TextView welcome;
     TextInputLayout phone, password;
 
-    FirebaseDatabase rootNode;
+    // firebase
     DatabaseReference reference;
     FirebaseAuth fAuth;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +74,13 @@ public class LoginActivity extends AppCompatActivity {
 
         setUp();
 
-        callSignUpBtnAction();
+//        callSignUpBtnAction();
+//
+//        continueBtnAction();
 
-        continueBtnAction();
 
-        forgetPasswordBtnAction();
 
-        fAuth = FirebaseAuth.getInstance();
+
 
 
     }
@@ -71,10 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         callSignUpBtn = findViewById(R.id.signUpBtn);
         continueBtn = findViewById(R.id.loginContinueBtn);
         forgetPasswordBtn=findViewById(R.id.forgetPasswordBtn);
-        welcome = findViewById(R.id.welcome);
+        //welcome = findViewById(R.id.welcome);
         phone = findViewById(R.id.loginPhone);
         password = findViewById(R.id.loginPassword);
         user = new User();
+        fAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -86,12 +106,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 // array size must be same as the number of the elements
                 //TODO fixed hardcoded
-                Pair[] pairs = new Pair[5];
+                Pair[] pairs = new Pair[4];
                 pairs[0] = new Pair<View, String> (phone, "phone_number_trans");
                 pairs[1] = new Pair<View, String> (password, "password_trans");
-                pairs[2] = new Pair<View, String> (welcome, "welcome_trans");
-                pairs[3] = new Pair<View, String> (continueBtn, "continue_trans");
-                pairs[4] = new Pair<View, String> (callSignUpBtn, "signUp_login_trans");
+                pairs[2] = new Pair<View, String> (continueBtn, "continue_trans");
+                pairs[3] = new Pair<View, String> (callSignUpBtn, "signUp_login_trans");
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
@@ -101,6 +120,28 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // If the user's info is saved in shared preference file then automatically sign in
+    @Override
+    protected void onResume() {
+        super.onResume();
+        callSignUpBtnAction();
+        forgetPasswordBtnAction();
+        pref = getSharedPreferences(myPreference, Context.MODE_PRIVATE);
+
+        String empty = pref.getString(userPhone, "");
+        Log.d(TAG, "the value of empty is: " + empty);
+        if (!(empty.matches(""))){
+            Log.d(TAG,"not empty");
+            phoneStr = pref.getString(userPhone,"");
+            passwordStr = pref.getString(userPassword, "");
+            setUserExist(true);
+            isUser(getUserExist());
+        }else{
+            Log.d(TAG," empty");
+            continueBtnAction();
+        }
     }
 
     protected void continueBtnAction(){
@@ -114,7 +155,8 @@ public class LoginActivity extends AppCompatActivity {
                     toast = Toast.makeText(LoginActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    isUser();
+                    setUserExist(false);
+                    isUser(getUserExist());
                 }
 
             }
@@ -140,6 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                         fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                clearUser(); // if the user reset password then user need to login again
                                 Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -190,10 +233,25 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void isUser() {
+    private void isUser(boolean existingUser) {
         //progressBar.setVisibility(View.VISIBLE);
-        final String userEnteredPhone = phone.getEditText().getText().toString().trim();
-        final String userEnteredPassword = password.getEditText().getText().toString().trim();
+
+        String userEnteredPhone ;
+        String userEnteredPassword ;
+        if(existingUser){
+            Log.d(TAG,"existing user checked");
+
+            userEnteredPhone = phoneStr;
+            userEnteredPassword = passwordStr;
+            phone.getEditText().setText(userEnteredPhone);
+            password.getEditText().setText(userEnteredPassword);
+        }else{
+            userEnteredPhone = phone.getEditText().getText().toString().trim();
+            userEnteredPassword = password.getEditText().getText().toString().trim();
+        }
+
+        Log.d(TAG,userEnteredPhone);
+        Log.d(TAG,userEnteredPassword);
         reference = FirebaseDatabase.getInstance().getReference("user");
         Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
 
@@ -216,14 +274,16 @@ public class LoginActivity extends AppCompatActivity {
                                 // use the password given by the user and user the email that is stored in the database based on given phone number
                                 // if the password in database does not match with user provided password then fail.
                                 // if the email stored in the authentication match with real time database email then success fully login
-                                if(task.isSuccessful()){
-                                    //
-                                    Log.d(TAG, "login success  " + userEnteredPhone);
-                                    if(fAuth.getCurrentUser().isEmailVerified()){
+                                if(dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")) Log.d(TAG, "loginBefore");
+                                if(task.isSuccessful() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
+                                    //TODO: If the current user updated email address verification email is not sent by firebase auth
+
+                                    // first time user need to verify the email
+                                    if(fAuth.getCurrentUser().isEmailVerified() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
                                         phone.setError(null);
                                         phone.setErrorEnabled(false);
-
-                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
+                                        Log.d(TAG, "login success  " + userEnteredPhone);
+//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
                                         String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
                                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
@@ -232,8 +292,36 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("Phone number", phoneNoFromDB);
                                         // save user phone number upon loggin
                                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        user.setPassword(userEnteredPassword);
+                                        saveUser();
+                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
                                         startActivity(intent);
                                         finish();
+                                    }
+                                    else if (dataSnapshot.child(userEnteredPhone).child("emailVerified").getValue(String.class).matches("TRUE")){
+                                        // if the user changed the email
+                                        phone.setError(null);
+                                        phone.setErrorEnabled(false);
+                                        Log.d(TAG, "login success  " + userEnteredPhone);
+//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
+                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
+                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+
+                                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                        intent.putExtra("Phone number", phoneNoFromDB);
+                                        // save user phone number upon loggin
+                                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        user.setPassword(userEnteredPassword);
+                                        saveUser();
+                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
+                                        startActivity(intent);
+                                        finish();
+
                                     }
                                     else{
                                         Toast.makeText(LoginActivity.this, "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
@@ -245,7 +333,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d(TAG, "password not equal " + userEnteredPhone);
 
                                     // progressBar.setVisibility(View.GONE);
-                                    password.setError("User Not Exit or Incorrect Password");
+                                    password.setError(" Incorrect Password");
                                     password.requestFocus();
 
                                 }
@@ -272,4 +360,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static User getUser(){return user == null ? null: user;}
+
+
+    // saving local user information in shared preference file
+    public static void saveUser(){
+        clearUser();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(userPhone, user.getPhone());
+        editor.putString(userPassword, user.getPassword());
+        editor.commit();
+    }
+
+    // clear user information in shared preference file
+    public static void clearUser(){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(userPhone, "");
+        editor.putString(userPassword, "");
+        editor.commit();
+
+
+    }
+
+    private static boolean getUserExist(){return userExist;}
+
+    private static void setUserExist(boolean val){ userExist = val;}
+
+
 }

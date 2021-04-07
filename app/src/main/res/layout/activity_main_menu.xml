@@ -10,65 +10,55 @@
 
     <Button
         android:id="@+id/LocationButton"
-        android:layout_width="213dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="60dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="50dp"
         android:text="Location"
+        android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+        app:layout_constraintEnd_toEndOf="@+id/citylinesButton"
+        app:layout_constraintStart_toStartOf="@+id/citylinesButton" />
 
     <Button
         android:id="@+id/citylinesButton"
-        android:layout_width="213dp"
-        android:layout_height="66dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="20dp"
         android:text="City Transit Lines"
+        android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:iconTint="#090808"
         app:layout_constraintBottom_toTopOf="@+id/LocationButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+        app:layout_constraintEnd_toEndOf="@+id/triphistoryButton"
+        app:layout_constraintStart_toStartOf="@+id/triphistoryButton" />
 
     <Button
         android:id="@+id/triphistoryButton"
-        android:layout_width="213dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="20dp"
         android:text="Trip history"
+        android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toTopOf="@+id/citylinesButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+        app:layout_constraintEnd_toEndOf="@+id/purchasefareButton"
+        app:layout_constraintStart_toStartOf="@+id/purchasefareButton" />
 
     <Button
         android:id="@+id/purchasefareButton"
-        android:layout_width="213dp"
-        android:layout_height="66dp"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="300dp"
         android:layout_marginBottom="20dp"
         android:text="Purchase Fare"
+        android:textColor="#050505"
         app:backgroundTint="#ABF8C539"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/activationcardButton"
-        android:layout_width="213dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="104dp"
-        android:text="Card Activation"
-        app:backgroundTint="#ABF8C539"
-        app:iconTint="#070707"
-        app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#050505"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

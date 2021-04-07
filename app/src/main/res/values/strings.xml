@@ -59,4 +59,7 @@
     <string name="poi">poi</string>
     <string name="dropped_pin">Custom Pin</string>
 
+    //Strings for profile
+    <string name="title_activity_profile">Account settings</string>
+
 </resources>
