@@ -50,7 +50,7 @@ public class OrderSheet {
     String farePrice = CheckoutActivity.getFarePrice();
 
     fare.setText(fareType);
-    price.setText(farePrice);
+    price.setText("$"+farePrice);
 
     View closeButton = sheetView.findViewById(R.id.close_sheet_button);
     View payWithCardButton = sheetView.findViewById(R.id.pay_with_card_button);

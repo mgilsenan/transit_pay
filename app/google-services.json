@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "929540309109",
-    "firebase_url": "https://transitpay-54282-default-rtdb.firebaseio.com",
-    "project_id": "transitpay-54282",
-    "storage_bucket": "transitpay-54282.appspot.com"
+    "project_number": "809893289959",
+    "firebase_url": "https://transit-pay-d4603-default-rtdb.firebaseio.com",
+    "project_id": "transit-pay-d4603",
+    "storage_bucket": "transit-pay-d4603.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:929540309109:android:7efad937fbb820a3d2383c",
+        "mobilesdk_app_id": "1:809893289959:android:eaa67ed40ba2d81690a742",
         "android_client_info": {
           "package_name": "com.example.transitpay"
         }
       },
       "oauth_client": [
         {
-          "client_id": "929540309109-qltg67me8nok5ilsmnkhdhfea0l8c7am.apps.googleusercontent.com",
+          "client_id": "809893289959-1tt6e1b8cjopvlvajf9dvm259bb37g6h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDRv1TpvI_YRQvggQ_2DYuZ5FOd-UigLjk"
+          "current_key": "AIzaSyCl6ByjoyUXZ5oGknoxkkBGj5Ff8wzL5tE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "929540309109-qltg67me8nok5ilsmnkhdhfea0l8c7am.apps.googleusercontent.com",
+              "client_id": "809893289959-1tt6e1b8cjopvlvajf9dvm259bb37g6h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
