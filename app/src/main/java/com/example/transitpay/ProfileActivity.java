@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.FormatException;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -21,15 +22,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -74,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText deleteAccount =  new EditText(v.getContext());
-                deleteAccount.setInputType(0x00000003);
+                deleteAccount.setInputType(0x00000002);
                 AlertDialog.Builder deleteAccountDialog = new AlertDialog.Builder(v.getContext());
                 deleteAccountDialog.setTitle("Delete account?");
                 deleteAccountDialog.setMessage("Enter your phone number to confirm");
@@ -124,7 +133,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 // updated data
                 final String nameStr = isEmpty(name);
                 final String phoneStr = isEmpty(phone);
@@ -148,6 +156,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 // update is performed only if field has at least new value and none of fields are emptied
                 if (countUpdate > 0 && countEmpty == 0){
+
 
                     String currentPhone = LoginActivity.getUser().getPhone();
 
@@ -186,13 +195,32 @@ public class ProfileActivity extends AppCompatActivity {
                                                 dataSnapshot.child(currentPhone).child("email").getRef().setValue(emailStr);
 
                                                 // update email in authentication
-                                                FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
+                                                //FirebaseAuth.getInstance().getCurrentUser().updateEmail(emailStr);
+                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                                // get auth credential from the user for re authentication
+                                                AuthCredential credential = EmailAuthProvider.getCredential(LoginActivity.getUser().getEmail(), LoginActivity.getUser().getPassword()); // current user credential
+                                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Log.d(TAG,"User reauthenticated");
+                                                        // change the address
+                                                        user.updateEmail(emailStr).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()){
+                                                                    Log.d(TAG, "user email updated ");
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
 
 
                                                 // Update local user obj
                                                 LoginActivity.getUser().setName(nameStr);
-                                                LoginActivity.getUser().setName(phoneStr);
-                                                LoginActivity.getUser().setName(emailStr);
+                                                LoginActivity.getUser().setPhone(phoneStr);
+                                                LoginActivity.getUser().setEmail(emailStr);
                                                 // update shared preference
                                                 LoginActivity.saveUser();
                                                 Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
@@ -216,6 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     LoginActivity.saveUser();
                                     Toast.makeText(ProfileActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
                                 }
+
 
 
                             } else {
@@ -308,24 +337,47 @@ public class ProfileActivity extends AppCompatActivity {
     // Log out from the session when user click LOGOUT button
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent = null; // value of the intent is depends on the user selected button option
+        final Intent[] intent = {null}; // value of the intent is depends on the user selected button option
         switch(item.getItemId()){
             case R.id.Logout:
                 Toast.makeText(this, "Logged out from account", Toast.LENGTH_LONG).show();
-                // destroy local user obj and return to login activity
-                LoginActivity.getUser().setPhone("");
-                LoginActivity.getUser().setName("");
-                LoginActivity.getUser().setEmail("");
-                LoginActivity.clearUser(); // removed the user in the preference file
+                final String phonStr = LoginActivity.getUser().getPhone();
+                FirebaseDatabase.getInstance().getReference("user").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
 
-                SharedPreferences pref = getSharedPreferences(LoginActivity.myPreference, Context.MODE_PRIVATE);
-                String empty = pref.getString(LoginActivity.userPhone, "");
-                String empty2 = pref.getString(LoginActivity.userPassword, "");
-                Log.d(TAG,"the value of shared preference after LogOut is: " + empty );
-                Log.d(TAG,"the value of shared preference after LogOut is: " + empty2 );
-                intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                        if (snapshot.child(phonStr).exists() ) {
+
+                            // reset the flag
+                            FirebaseDatabase.getInstance().getReference("user").child(phonStr).child("loginBefore").setValue("FALSE");
+
+                            // destroy local user obj and return to login activity
+                            LoginActivity.getUser().setPhone("");
+                            LoginActivity.getUser().setName("");
+                            LoginActivity.getUser().setEmail("");
+                            LoginActivity.clearUser(); // removed the user in the preference file
+
+                            SharedPreferences pref = getSharedPreferences(LoginActivity.myPreference, Context.MODE_PRIVATE);
+                            String empty = pref.getString(LoginActivity.userPhone, "");
+                            String empty2 = pref.getString(LoginActivity.userPassword, "");
+                            Log.d(TAG,"the value of shared preference after LogOut is: " + empty );
+                            Log.d(TAG,"the value of shared preference after LogOut is: " + empty2 );
+                            intent[0] = new Intent(ProfileActivity.this, LoginActivity.class);
+                            startActivity(intent[0]);
+                            finish();
+
+
+                        }else{
+                            Toast.makeText(ProfileActivity.
+                                            this, "Phone number is not linked to an account",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 return true;
 
             default:
@@ -333,8 +385,5 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void setText(){
-
-    }
 
 }

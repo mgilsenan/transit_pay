@@ -137,6 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                                 reference.child(phoneStr).setValue(user);
                                                                 reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
+                                                                reference.child(phoneStr).child("emailVerified").getRef().setValue("FALSE");
                                                                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                                                 startActivity(intent);
                                                                 finish();

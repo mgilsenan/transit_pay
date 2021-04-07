@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     // local user
     public static User user ;
     public static SharedPreferences pref;
+    private static boolean userExist; // if user Login before true
     public static final String myPreference = "myPreference";
     public static final String userPhone = "serPhoneKey";
     public static final String userPassword = "userPasswordKey";
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //        continueBtnAction();
 
-        forgetPasswordBtnAction();
+
 
 
 
@@ -126,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         callSignUpBtnAction();
+        forgetPasswordBtnAction();
         pref = getSharedPreferences(myPreference, Context.MODE_PRIVATE);
 
         String empty = pref.getString(userPhone, "");
@@ -134,7 +136,8 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG,"not empty");
             phoneStr = pref.getString(userPhone,"");
             passwordStr = pref.getString(userPassword, "");
-            isUser(true);
+            setUserExist(true);
+            isUser(getUserExist());
         }else{
             Log.d(TAG," empty");
             continueBtnAction();
@@ -152,7 +155,8 @@ public class LoginActivity extends AppCompatActivity {
                     toast = Toast.makeText(LoginActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    isUser(false);
+                    setUserExist(false);
+                    isUser(getUserExist());
                 }
 
             }
@@ -274,11 +278,12 @@ public class LoginActivity extends AppCompatActivity {
                                 if(task.isSuccessful() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
                                     //TODO: If the current user updated email address verification email is not sent by firebase auth
 
+                                    // first time user need to verify the email
                                     if(fAuth.getCurrentUser().isEmailVerified() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
                                         phone.setError(null);
                                         phone.setErrorEnabled(false);
                                         Log.d(TAG, "login success  " + userEnteredPhone);
-                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
+//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
                                         String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
                                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
@@ -290,8 +295,33 @@ public class LoginActivity extends AppCompatActivity {
                                         user.setPassword(userEnteredPassword);
                                         saveUser();
                                         dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
                                         startActivity(intent);
                                         finish();
+                                    }
+                                    else if (dataSnapshot.child(userEnteredPhone).child("emailVerified").getValue(String.class).matches("TRUE")){
+                                        // if the user changed the email
+                                        phone.setError(null);
+                                        phone.setErrorEnabled(false);
+                                        Log.d(TAG, "login success  " + userEnteredPhone);
+//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
+                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
+                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+
+                                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                        intent.putExtra("Phone number", phoneNoFromDB);
+                                        // save user phone number upon loggin
+                                        user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        user.setPassword(userEnteredPassword);
+                                        saveUser();
+                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
+                                        startActivity(intent);
+                                        finish();
+
                                     }
                                     else{
                                         Toast.makeText(LoginActivity.this, "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
@@ -303,7 +333,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d(TAG, "password not equal " + userEnteredPhone);
 
                                     // progressBar.setVisibility(View.GONE);
-                                    password.setError("User Not Exit or Incorrect Password");
+                                    password.setError(" Incorrect Password");
                                     password.requestFocus();
 
                                 }
@@ -350,5 +380,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    private static boolean getUserExist(){return userExist;}
+
+    private static void setUserExist(boolean val){ userExist = val;}
+
 
 }
