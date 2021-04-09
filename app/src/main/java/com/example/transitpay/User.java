@@ -2,7 +2,7 @@ package com.example.transitpay;
 
 public class User {
     // we no longer save password in real time database because authentication has it
-    String name, email, phone;
+    String name, email, phone, password;
 
     public User() {
         // default;
@@ -21,6 +21,14 @@ public class User {
         this.email = copy.getEmail();
         this.phone = copy.getPhone();
 
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
     public String getName() {

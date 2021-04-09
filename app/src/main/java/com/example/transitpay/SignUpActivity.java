@@ -18,9 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 // TODO Refine UI
 
@@ -30,12 +33,12 @@ public class SignUpActivity extends AppCompatActivity {
     TextView welcome;
     TextInputLayout email, password, name, phone;
     FirebaseAuth fAuth;
-    String userID;
+    private static Boolean flag; // if the phone number exists in the database it sets to true
     final static String TAG = "SignUpActivity";
 
 
     FirebaseDatabase rootNode;
-    DatabaseReference childNode;
+    DatabaseReference reference;
 
     private static final int passwordLength = 6;
 
@@ -68,6 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         phone = findViewById(R.id.phone);
 
+
     }
 
     public void continueBtnAction(){
@@ -83,41 +87,91 @@ public class SignUpActivity extends AppCompatActivity {
                     toast.show();
                 }else{
                     rootNode = FirebaseDatabase.getInstance();
-                    childNode = rootNode.getReference("user");
+                    reference = rootNode.getReference("user");
 
-                    String nameStr = name.getEditText().getText().toString();
-                    String emailStr = email.getEditText().getText().toString();
-                    String passwordStr = password.getEditText().getText().toString();
-                    String phoneStr = phone.getEditText().getText().toString();
 
-                    fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    String nameStr = name.getEditText().getText().toString().trim();
+                    String emailStr = email.getEditText().getText().toString().trim();
+                    String passwordStr = password.getEditText().getText().toString().trim();
+                    String phoneStr = phone.getEditText().getText().toString().trim();
+
+                    Query checkUserPhone = reference.orderByChild("phone").equalTo(phoneStr);
+
+                    Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
+                    phone.setError(null);
+                    email.setError(null);
+
+                    checkUserPhone.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "Successful, Please Check Your Email for Verification",
-                                                Toast.LENGTH_LONG).show();
-                                        User user = new User(nameStr, emailStr, phoneStr);
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Log.d(TAG, "the phone number entered is found"+phoneStr);
+                                phone.setError("phone number is  already taken by other user \n" +
+                                        "delete existing account and try again");
+                                phone.requestFocus();
 
-                                        childNode.child(phoneStr).setValue(user);
+                            }
+                            else{
+                                Log.d(TAG, "the phone number entered is not found"+phoneStr);
 
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+                                Query checkUserEmail = reference.orderByChild("email").equalTo(emailStr);
+                                checkUserEmail.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()){
+                                            Log.d(TAG,"the email is found " + emailStr);
+                                            email.setError("Email is already taken by other user \n" +
+                                                    "delete existing account and try again");
+                                            email.requestFocus();
+                                        }else{
+                                            Log.d(TAG, "the email entered is not found "+emailStr);
+                                            fAuth.createUserWithEmailAndPassword(emailStr,passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()) {
+                                                                Toast.makeText(SignUpActivity.this, "Request sent, Please Check Your Email for Verification",
+                                                                        Toast.LENGTH_LONG).show();
+                                                                User user = new User(nameStr, emailStr, phoneStr);
+                                                                user.setPassword(passwordStr);
+
+                                                                reference.child(phoneStr).setValue(user);
+                                                                reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
+                                                                reference.child(phoneStr).child("emailVerified").getRef().setValue("FALSE");
+                                                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                            else {
+                                                                Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
+                                                                        Toast.LENGTH_LONG).show();
+                                                            }
+
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                        }
                                     }
-                                    else {
-                                        Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
-                                                Toast.LENGTH_LONG).show();
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // do nothing
                                     }
+                                });
 
+                            }
 
-                                }
-                            });
                         }
-                    });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // do nothing.
+                        }
 
+                    });
 
                 }
 
@@ -125,6 +179,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
+
 
     private Boolean isNameValid(){
         String nameStr = name.getEditText().getText().toString();
@@ -165,9 +220,9 @@ public class SignUpActivity extends AppCompatActivity {
                 //"(?=.*[a-z])" +         //at least 1 lower case letter
                 //"(?=.*[A-Z])" +         //at least 1 upper case letter
                 "(?=.*[a-zA-Z])" +      //any letter
-                "(?=.*[@#$%^&+=!])" +    //at least 1 special character
+                // "(?=.*[@#$%^&+=!])" +    //at least 1 special character
                 "(?=\\S+$)" +           //no white spaces
-                ".{4,}" +               //at least 4 characters
+                ".{6,}" +               //at least 4 characters
                 "$";
 
         if (passwordStr.isEmpty()){
@@ -175,7 +230,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             return false;
         }else if(!passwordStr.matches(passwordPattern)){
-            password.setError("Invalid pattern");
+            password.setError("Include at least 6 characters with no space between ");
             return false;
         }
         else{
@@ -194,8 +249,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             return false;
         }else{
-            phone.setError(null);
-            phone.setErrorEnabled(false);
+//            phone.setError(null);
+//            phone.setErrorEnabled(false);
             return true;
         }
     }
@@ -208,13 +263,11 @@ public class SignUpActivity extends AppCompatActivity {
                 Intent intent = new Intent (SignUpActivity.this, LoginActivity.class);
 
                 // array size needs to be exactly same as the number of the elements
-                //TODO fixed hardcoded
-                Pair[] pairs = new Pair[5];
+                Pair[] pairs = new Pair[4];
                 pairs[0] = new Pair<View, String> (phone, "phone_number_trans");
                 pairs[1] = new Pair<View, String> (password, "password_trans");
-                pairs[2] = new Pair<View, String> (welcome, "welcome_trans");
-                pairs[3] = new Pair<View, String> (continueBtn, "continue_trans");
-                pairs[4] = new Pair<View, String> (loginBtn, "signUp_login_trans");
+                pairs[2] = new Pair<View, String> (continueBtn, "continue_trans");
+                pairs[3] = new Pair<View, String> (loginBtn, "signUp_login_trans");
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivity.this, pairs);
