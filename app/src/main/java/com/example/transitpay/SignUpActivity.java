@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -31,8 +32,8 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputLayout email, password, name, phone;
     FirebaseAuth fAuth;
     String userID;
+    NfcAdapter nfc;
     final static String TAG = "SignUpActivity";
-
 
     FirebaseDatabase rootNode;
     DatabaseReference childNode;
@@ -70,6 +71,28 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(nfc==null)
+        {
+            nfc = NfcAdapter.getDefaultAdapter(this);
+        }
+        nfc.disableForegroundDispatch(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(nfc==null)
+        {
+            nfc = NfcAdapter.getDefaultAdapter(this);
+        }
+        nfc.disableForegroundDispatch(this);
+    }
+
+
     public void continueBtnAction(){
         continueBtn.setOnClickListener(new View.OnClickListener() {
             // save user obj in realtime database: phone number is unique user id
@@ -103,9 +126,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                                         childNode.child(phoneStr).setValue(user);
 
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(SignUpActivity.this, GetStarted.class);
                                         startActivity(intent);
-                                        finish();
+
+
                                     }
                                     else {
                                         Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
@@ -205,7 +229,9 @@ public class SignUpActivity extends AppCompatActivity {
             // go back to login activity
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent (SignUpActivity.this, LoginActivity.class);
+
 
                 // array size needs to be exactly same as the number of the elements
                 //TODO fixed hardcoded
@@ -219,6 +245,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivity.this, pairs);
                     startActivity(intent, options.toBundle());
+
                 }
             }
         });

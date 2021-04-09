@@ -4,10 +4,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 
 public class MainMenuActivity extends AppCompatActivity {
     protected Button triphistoryButton;
@@ -15,13 +17,14 @@ public class MainMenuActivity extends AppCompatActivity {
     protected Button purchaseButton;
     protected Button citylinesButton;
     protected Button activateButton;
-
+    NfcAdapter nfc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         setupUI();
+
     }
     private void setupUI(){
         triphistoryButton=findViewById(R.id.triphistoryButton);
@@ -60,16 +63,46 @@ public class MainMenuActivity extends AppCompatActivity {
         activateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToActivateCardActivity();
+                gotoGetStarted();
+               //goToInfoCardActivity();
+                gotoGetStarted();
             }
         });
 
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(nfc==null)
+        {
+            nfc = NfcAdapter.getDefaultAdapter(this);
+        }
+        nfc.disableForegroundDispatch(this);
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(nfc==null)
+        {
+            nfc = NfcAdapter.getDefaultAdapter(this);
+        }
+        nfc.disableForegroundDispatch(this);
+    }
+
+    private void gotoGetStarted(){
+        Intent intent= new Intent(MainMenuActivity.this, GetStarted.class);
+        startActivity(intent);
+    }
     private void goToTripHistoryActivity(){
-        String phone_number=getIntent().getStringExtra("Phone number");
+//        String phone_number=getIntent().getStringExtra("Phone number");
         Intent intent= new Intent(MainMenuActivity.this, TripHistoryActivity.class);
-        intent.putExtra("Phone number", phone_number);
+//        intent.putExtra("Phone number", phone_number);
+//        Toast.makeText(this, "The intent MAINMENU phoneNumber"+phone_number,
+//                Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
     private void goToLocationActivity(){
@@ -86,10 +119,6 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent= new Intent(MainMenuActivity.this, CitylinesActivity.class);
         startActivity(intent);
     }
-    private void  goToActivateCardActivity(){
-        Intent intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
-        startActivity(intent);
-    }
-    
-    
+
+
 }

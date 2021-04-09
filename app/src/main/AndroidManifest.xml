@@ -17,6 +17,9 @@
             android:value="true"/>
 
         <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <meta-data
             android:name="sqip.SQUARE_APPLICATION_ID"
             android:value="sandbox-sq0idb-Dz5RkDU0AwfbNrSOlu4bBg"/>
 
@@ -68,8 +71,20 @@
         </activity>
         <activity
 
+            android:name=".InfoActivateCard"
+            android:parentActivityName=".LoginActivity">
+
+        </activity>
+        <activity
+
+            android:name=".GetStarted"
+            android:parentActivityName=".SignUpActivity">
+
+        </activity>
+        <activity
+
             android:name=".ActivateCardActivity"
-            android:parentActivityName=".MainMenuActivity">
+            android:parentActivityName=".InfoActivateCard">
             <intent-filter>
 
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />

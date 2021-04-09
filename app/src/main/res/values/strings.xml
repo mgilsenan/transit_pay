@@ -59,4 +59,10 @@
     <string name="poi">poi</string>
     <string name="dropped_pin">Custom Pin</string>
 
+    //String info Activate Card
+    <string name="info_Activate">CLICK ON "ACTIVATE CARD" AND WAIT FOR CONFIRMATION</string>
+    <string name="skip">SKIP</string>
+    <string name="Back">Button</string>
+
+
 </resources>

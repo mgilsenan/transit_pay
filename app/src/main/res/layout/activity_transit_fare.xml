@@ -11,10 +11,11 @@
 
     <ImageView
         android:id="@+id/purchase_fare"
-        android:src="@drawable/purchase_fare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:background="#FFFFFF"
+        android:src="@drawable/purchase_fare"
+        android:contentDescription="TODO" />
 
     <Button
         android:id="@+id/one_trip"
