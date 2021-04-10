@@ -4,30 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_menu_background"
+    android:background="@drawable/bk_main_page"
     tools:context=".MainMenuActivity">
 
 
+    <ImageView
+        android:layout_width="472dp"
+        android:layout_height="127dp"
+        android:src="@drawable/speed"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-21dp" />
+
+    <ImageView
+        android:layout_width="325dp"
+        android:layout_height="357dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:src="@drawable/remaining_fare"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.182"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="614dp"
+        android:layout_height="645dp"
+        android:src="@drawable/box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/LocationButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="30dp"
         android:text="Location"
+        android:drawableLeft="@drawable/ic_loc"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/citylinesButton"
         app:layout_constraintStart_toStartOf="@+id/citylinesButton" />
 
     <Button
         android:id="@+id/citylinesButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="10dp"
         android:text="City Transit Lines"
+        android:drawableLeft="@drawable/ic_tranist"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:iconTint="#090808"
         app:layout_constraintBottom_toTopOf="@+id/LocationButton"
         app:layout_constraintEnd_toEndOf="@+id/triphistoryButton"
@@ -35,30 +73,37 @@
 
     <Button
         android:id="@+id/triphistoryButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="10dp"
         android:text="Trip history"
+        android:drawableLeft="@drawable/ic_history"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toTopOf="@+id/citylinesButton"
         app:layout_constraintEnd_toEndOf="@+id/purchasefareButton"
         app:layout_constraintStart_toStartOf="@+id/purchasefareButton" />
 
     <Button
         android:id="@+id/purchasefareButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Purchase Fare"
+        android:drawableLeft="@drawable/ic_money"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
