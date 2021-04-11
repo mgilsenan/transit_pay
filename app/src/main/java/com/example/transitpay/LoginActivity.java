@@ -44,8 +44,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+    // local user
     public static User user ;
+    public static SharedPreferences pref;
+    private static boolean userExist; // if user Login before true
+    public static final String myPreference = "myPreference";
+    public static final String userPhone = "serPhoneKey";
+    public static final String userPassword = "userPasswordKey";
+    private String phoneStr;
+    private String passwordStr;
 
+
+
+    // UI
     Button callSignUpBtn, continueBtn,forgetPasswordBtn;
     TextView welcome;
     TextInputLayout phone, password;
@@ -326,8 +337,7 @@ public class LoginActivity extends AppCompatActivity {
                                         String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
                                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
-
-
+                                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
                                         intent.putExtra("Phone number", phoneNoFromDB);
                                         // save user phone number upon loggin
