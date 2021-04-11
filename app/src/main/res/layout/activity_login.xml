@@ -76,7 +76,7 @@
         android:layout_marginRight="25dp"
         android:backgroundTint="#537b56"
         android:textColor="#FFEB3B"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:transitionName="@string/continue_trans" />
 
     <Button

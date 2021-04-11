@@ -8,29 +8,51 @@
     tools:context=".MainMenuActivity">
 
 
+    <!--
     <ImageView
         android:layout_width="472dp"
         android:layout_height="127dp"
         android:src="@drawable/speed"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="-21dp" />
+        tools:layout_editor_absoluteY="-21dp" />-->
 
-    <ImageView
-        android:layout_width="325dp"
-        android:layout_height="357dp"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:src="@drawable/remaining_fare"
+        android:layout_marginRight="150dp"
+        android:text="Skip the lines &amp;"
+        android:textColor="@color/jungleGreen"
+        android:textSize="38sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.121"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.182"
+        app:layout_constraintVertical_bias="0.023"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="150dp"
+        android:text="pay on your phone."
+        android:textColor="@color/jungleGreen"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.101"
         tools:ignore="MissingConstraints" />
 
     <ImageView
         android:layout_width="614dp"
-        android:layout_height="645dp"
+        android:layout_height="145dp"
         android:src="@drawable/box"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +62,7 @@
         android:id="@+id/LocationButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="28dp"
+        android:padding="24dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
@@ -57,7 +79,7 @@
         android:id="@+id/citylinesButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="28dp"
+        android:padding="24dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
@@ -75,7 +97,7 @@
         android:id="@+id/triphistoryButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="28dp"
+        android:padding="24dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
@@ -92,7 +114,7 @@
         android:id="@+id/purchasefareButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="28dp"
+        android:padding="24dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
