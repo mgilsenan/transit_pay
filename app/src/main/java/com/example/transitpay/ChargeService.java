@@ -14,9 +14,13 @@ public interface ChargeService {
 
   class ChargeRequest {
     final String nonce;
+    final String fare;
+    final String price;
 
-    ChargeRequest(String nonce) {
+    ChargeRequest(String nonce, String fare, String price) {
       this.nonce = nonce;
+      this.fare = fare;
+      this.price = price;
     }
   }
 }

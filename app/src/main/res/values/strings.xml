@@ -22,7 +22,7 @@
     <string name="address">Single Fare</string>
 
     <string name="buy_button">Checkout Fare</string>
-    <string name="description">Instantly gain special powers when ordering a super cookie</string>
+    <string name="description"></string>
     <string name="lauren_nobel">Transit Fare Type</string>
     <string name="merchant_id_not_set_message"><![CDATA[To request a Google Pay nonce, replace <b>ConfigHelper.GOOGLE_PAY_MERCHANT_ID</b> with your Google Pay Merchant ID.]]></string>
     <string name="merchant_id_not_set_title">Missing Google Pay Merchant ID</string>
@@ -39,7 +39,7 @@
     <string name="server_host_not_set_message">Payment Successful</string>
     <string name="server_host_not_set_title">Nonce generated but not charged</string>
     <string name="ship_to">Purchase</string>
-    <string name="successful_order_message">Go to your Square dashboard to see this order reflected in the sales tab.</string>
+    <string name="successful_order_message">You have access to transportation, find your remaining transit fare displayed on the main page of the app</string>
     <string name="successful_order_title">Your order was successful</string>
     <string name="super_cookie">Super Cookie</string>
     <string name="total">Total</string>
@@ -58,6 +58,9 @@
     <string name="lat_long_snippet">Lat: %1$.5f, Long: %2$.5f</string>
     <string name="poi">poi</string>
     <string name="dropped_pin">Custom Pin</string>
+
+    //Strings for profile
+    <string name="title_activity_profile">Account settings</string>
 
     //String info Activate Card
     <string name="info_Activate">CLICK ON "ACTIVATE CARD" AND WAIT FOR CONFIRMATION</string>

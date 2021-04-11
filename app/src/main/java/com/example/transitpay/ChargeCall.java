@@ -38,7 +38,7 @@ public class ChargeCall implements Call<ChargeResult> {
       String nonce) {
     this.factory = factory;
     this.nonce = nonce;
-    call = factory.service.charge(new ChargeService.ChargeRequest(nonce));
+    call = factory.service.charge(new ChargeService.ChargeRequest(nonce,CheckoutActivity.getFareType(),CheckoutActivity.getFarePrice()));
   }
 
   @Override

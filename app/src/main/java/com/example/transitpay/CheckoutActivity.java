@@ -62,7 +62,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     fare.setText(fareType);
 
-    price.setText(farePrice);
+    price.setText("$"+farePrice);
 
     googlePayChargeClient = (GooglePayChargeClient) getLastCustomNonConfigurationInstance();
     if (googlePayChargeClient == null) {

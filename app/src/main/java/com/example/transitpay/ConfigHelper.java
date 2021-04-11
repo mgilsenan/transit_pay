@@ -11,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 public class ConfigHelper {
 
   public static final String GOOGLE_PAY_MERCHANT_ID = "L0XZV3TM660BJ";
-  private static final String CHARGE_SERVER_HOST = "REPLACE_ME";
+  private static final String CHARGE_SERVER_HOST = "test3-transit-pay.herokuapp.com/";
   private static final String CHARGE_SERVER_URL = "https://" + CHARGE_SERVER_HOST + "/";
 
   public static boolean serverHostSet() {

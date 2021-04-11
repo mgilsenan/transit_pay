@@ -19,6 +19,8 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
   private final Resources resources;
   FirebaseDatabase rootNode;
   DatabaseReference reference;
+  private int daysLeft = 0;
+  private int ticketsLeft = 0;
 
   public CardEntryBackgroundHandler(ChargeCall.Factory chargeCallFactory,
       Resources resources) {
@@ -29,9 +31,7 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
 
   @Override
   public CardEntryActivityCommand handleEnteredCardInBackground(CardDetails cardDetails) {
-    String fareType = CheckoutActivity.getFareType();
 
-    assignFareType(fareType);
 
     if (!ConfigHelper.serverHostSet()) {
       ConfigHelper.printCurlCommand(cardDetails.getNonce());
@@ -42,6 +42,10 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
     ChargeResult chargeResult = chargeCall.execute();
 
     if (chargeResult.success) {
+      String fareType = CheckoutActivity.getFareType();
+
+      assignFareType(fareType);
+
       return new CardEntryActivityCommand.Finish();
     } else if (chargeResult.networkError) {
       return new CardEntryActivityCommand.ShowError(resources.getString(R.string.network_failure));
@@ -63,33 +67,49 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
 
     reference = rootNode.getReference("user/"+phoneNumber);
 
-    PaymentStatus paymentStatus = new PaymentStatus("True");
+    //PaymentStatus paymentStatus = new PaymentStatus("True");
 
-    reference.child("Payment status").setValue(paymentStatus);
+    //reference.child("Payment status").setValue(paymentStatus);
 
-    reference.child("Fare Type").setValue(fareType);
+    if(fareType.equals("3Day")||fareType.equals("Weekly")||fareType.equals("Monthly")){
+      reference.child("daysLeft").setValue(daysLeft);
+      //boolean isZero =reference.child("Days Left").equals(0);
+      //reference.child("Zero").setValue(isZero);
+    }
+
+    if(fareType.equals("One")||fareType.equals("Two")||fareType.equals("Ten")){
+      reference.child("ticketsLeft").setValue(ticketsLeft);
+    }
+
+    reference.child("Last Purchased Fare").setValue(fareType);
   }
 
   @Nullable
   private String getFareType(String fare) {
     String fareType = null;
     if(fare.equals("Single Trip Fare")){
-      fareType = "1";
+      fareType = "One";
+      ticketsLeft = 1;
     }
     else if(fare.equals("Two Trip Fare")){
-      fareType = "2";
+      fareType = "Two";
+      ticketsLeft = 2;
     }
     else if(fare.equals("10 Trip Fare")){
-      fareType = "10";
+      fareType = "Ten";
+      ticketsLeft = 10;
     }
     else if(fare.equals("Three Day Fare")){
       fareType = "3Day";
+      daysLeft = 3;
     }
     else if(fare.equals("Weekly Fare")){
-      fareType = "W";
+      fareType = "Weekly";
+      daysLeft = 7;
     }
     else if(fare.equals("Monthly Fare")){
-      fareType = "M";
+      fareType = "Monthly";
+      daysLeft = 30;
     }
     return fareType;
   }
