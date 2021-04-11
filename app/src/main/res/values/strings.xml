@@ -63,6 +63,7 @@
     <string name="info_Activate">CLICK ON "ACTIVATE CARD" AND WAIT FOR CONFIRMATION</string>
     <string name="skip">SKIP</string>
     <string name="Back">Button</string>
+    <string name="trip_history">Trip history</string>
 
 
 </resources>
