@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_menu_background"
+    android:background="@drawable/background_login"
     android:orientation="vertical"
     tools:context=".LoginActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,14 +18,13 @@
 
 
 
-
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -40,6 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:transitionName="@string/phone_number_trans" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,6 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:transitionName="@string/password_trans" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -66,11 +70,13 @@
     <Button
         android:id="@+id/loginContinueBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="Login"
-        android:backgroundTint="@color/jungleGreen"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:backgroundTint="#537b56"
         android:textColor="#FFEB3B"
-        android:textSize="24sp"
+        android:textSize="15sp"
         android:transitionName="@string/continue_trans" />
 
     <Button
@@ -79,6 +85,7 @@
         android:layout_height="wrap_content"
         android:text="create a new account? "
         android:background="#00000000"
+        android:textSize="12sp"
         android:textColor="@color/black"
         android:transitionName="@string/signUp_login_trans"/>
     <View
@@ -86,13 +93,13 @@
         android:layout_height="1.5dp"
         android:background="@color/jungleGreen"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"></View>
     <Button
         android:id="@+id/forgetPasswordBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00000000"
+        android:textSize="12sp"
         android:text="forget your password? "
         android:textColor="@color/black"
         android:transitionName="@string/signUp_login_trans" />

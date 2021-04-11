@@ -205,18 +205,23 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //extract the email and send reset link
                         String mail = resetMail.getText().toString();
-                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                clearUser(); // if the user reset password then user need to login again
-                                Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LoginActivity.this, "Error! Reset Link is Not Sent", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        if(mail.matches("")){
+                            Toast.makeText(LoginActivity.this, "Email cannot be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    clearUser(); // if the user reset password then user need to login again
+                                    Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(LoginActivity.this, "Error! Reset Link is Not Sent", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
                     }
                 });
                 passwordRestDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
