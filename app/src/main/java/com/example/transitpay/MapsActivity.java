@@ -195,7 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 map.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(getString(R.string.dropped_pin))
-                        .snippet(snippet)
+//                        .snippet(snippet)
                         .icon(BitmapDescriptorFactory.defaultMarker
                                 (BitmapDescriptorFactory.HUE_ORANGE)).alpha(0.9f));
             }

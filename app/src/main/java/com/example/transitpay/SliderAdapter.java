@@ -31,8 +31,8 @@ public class SliderAdapter extends PagerAdapter {
         };
         slideDes= new String[]{
                 "Activate your metro card to go places",
-                "Do not stand in line\n"+"Purchase a Fare with our App",
-                "Browse your previous trips info.\n Find out Location, Date and Time of your recent"+
+                "Skip long lines.\n"+"Purchase a Fare with our App",
+                "Browse your previous trips info.\n Find out location, date and time of your recent"+
                 " trips",
                 "Plan your trip.\n" +
                         "Locate metro stations and other places of interest. "
