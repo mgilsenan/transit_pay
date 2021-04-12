@@ -8,6 +8,45 @@
     tools:context=".MainMenuActivity">
 
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="283dp"
+        android:layout_height="285dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/remainingfare_design_4" />
+
+    <ImageButton
+        android:id="@+id/fareviewchangebtn"
+        android:layout_width="61dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="236dp"
+        android:layout_marginTop="68dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:srcCompat="@drawable/changeviewbtn" />
+
+    <TextView
+        android:id="@+id/fareviewtxt"
+        android:layout_width="136dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="94dp"
+        android:text="remainingfare"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+
     <!--
     <ImageView
         android:layout_width="472dp"
@@ -128,4 +167,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
