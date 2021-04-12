@@ -2,6 +2,7 @@ package com.example.transitpay;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,6 +42,8 @@ public class CheckoutActivity extends AppCompatActivity {
   TextView fare;
 
   TextView price;
+
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,10 @@ public class CheckoutActivity extends AppCompatActivity {
       googlePayChargeClient.cancel();
     }
     googlePayChargeClient.onActivityDestroyed();
+
   }
+
+
 
   public void showError(String message) {
     showOkDialog(R.string.unsuccessful_order, message);

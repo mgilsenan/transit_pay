@@ -43,13 +43,11 @@ public class ActivateCardActivity extends AppCompatActivity {
     boolean writeMode;
     Tag myTag;
     Context context;
-    TextView phonenumberEditText;
-    TextView nfcContents;
     Button activateButton;
+    TextView infoText;
     FirebaseDatabase mDatabase;
     DatabaseReference mDbRef;
     DatabaseReference ref;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +58,20 @@ public class ActivateCardActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDbRef=mDatabase.getReference("user");
         ref=FirebaseDatabase.getInstance().getReference("user");
+        String phoneNumber =LoginActivity.getUser().getPhone();
+        //String phoneNumber_intent = getIntent().getStringExtra("Phone number");
+        //String phoneNumber_intent = getIntent().getStringExtra("Phone number");
+//        Toast.makeText(this, "The Activate phoneNumber"+phoneNumber,
+//                Toast.LENGTH_SHORT).show();
+        setupUI(phoneNumber);
 
-
-        setupUI();
         nfcAdapter= NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter == null){
             Toast.makeText(this, "This device does not support NFC",
                     Toast.LENGTH_SHORT).show();
             finish();
         }
+
         readfromIntent(getIntent());
 
         pendingIntent= PendingIntent.getActivity(this,
@@ -81,22 +84,31 @@ public class ActivateCardActivity extends AppCompatActivity {
         writingTagFilters=new IntentFilter[]{ tagDetected };
     }
 
-
-
-    private void setupUI()
+    private void setupUI(String phoneNumber)
     {
-        phonenumberEditText=findViewById(R.id.phonenumberEditText);
-        nfcContents=findViewById(R.id.nfcTextView);
+        infoText=findViewById(R.id.infotextView);
         activateButton=findViewById(R.id.activatetagButton);
         context=this;
         activateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCardAvailable();
+                if(myTag==null)
+                    finish();
+                else
+                isCardAvailable(phoneNumber);// isCardAvailable();
             }
         });
     }
 
+    private void goToMainMenu(String phone_number){
+//
+//        Toast.makeText(this, "The intent ACTIVATE CARD GOMAIN phoneNumber"+phone_number,
+//                Toast.LENGTH_SHORT).show();
+        Intent intent= new Intent(ActivateCardActivity.this, MainMenuActivity.class);
+//        intent.putExtra("Phone number", phone_number);
+        startActivity(intent);
+
+    }
 
     private void readfromIntent(Intent intent)
     {
@@ -122,7 +134,8 @@ public class ActivateCardActivity extends AppCompatActivity {
     }
     //Function to check if the card has already been activated
 
-    private void isCardAvailable(){
+    private void isCardAvailable(String phoneNumber){//nothing passed
+
         Query query= ref
                 .orderByChild("NFC TAG").equalTo(bin2hex(myTag.getId()));
         query.addListenerForSingleValueEvent(new ValueEventListener() { //addValueEventListener
@@ -134,7 +147,8 @@ public class ActivateCardActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 else{
-                    linkCard(phonenumberEditText.getText().toString());
+                    linkCard(phoneNumber);
+                   // linkCard(phonenumberEditText.getText().toString());//linkCard(phonenumberEditText.getText().toString())
                 }
             }
 
@@ -165,8 +179,13 @@ public class ActivateCardActivity extends AppCompatActivity {
 
                          }else{
 
-                             write("Phone number: "+ phonenumberEditText.getText().toString(),
+                             write("Phone number: "+ phoneNumber ,//phonenumberEditText.getText().toString()
                                      myTag);
+                             Toast.makeText(ActivateCardActivity.
+                                             this, "You have succesfully activated your card" +
+                                             " and your card is now is ready to use ",
+                                     Toast.LENGTH_LONG).show();
+                             goToMainMenu(phoneNumber);
                          }
                      }
                      catch (IOException e) {
@@ -208,16 +227,14 @@ public class ActivateCardActivity extends AppCompatActivity {
             text= new String(payload, LanguageCodeLength+1 , payload.length
                     - LanguageCodeLength - 1, textEncode);
 
-            Toast.makeText(ActivateCardActivity.this, text, Toast.LENGTH_LONG).show();
+           // Toast.makeText(ActivateCardActivity.this, text, Toast.LENGTH_LONG).show();
 
         }catch(UnsupportedEncodingException e){
             Log.e("UnsupportedEncoding", e.toString());
 
         }
-        nfcContents.setText("NFC Content:"+ text);
 
     }
-
 
     //function to connect and write to the NFC tag
     private void write(String text, Tag tag) throws IOException, FormatException
@@ -275,12 +292,15 @@ public class ActivateCardActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         writeModeOff();
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         writeModeOn();
+
     }
 
     //enable writing

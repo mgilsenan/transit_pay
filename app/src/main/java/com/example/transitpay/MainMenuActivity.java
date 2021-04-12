@@ -1,10 +1,12 @@
 package com.example.transitpay;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +30,8 @@ public class MainMenuActivity extends AppCompatActivity {
     protected Button purchaseButton;
     protected Button citylinesButton;
 //    protected Button activateButton;
+//    NfcAdapter nfc=null;
+
 
 
     @Override
@@ -79,14 +83,46 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if(nfc==null)
+//        {
+//            nfc = NfcAdapter.getDefaultAdapter(this);
+//        }
+//        nfc.disableForegroundDispatch(this);
+//        final Intent[] intent = {null};
+//        intent[0] = new Intent(MainMenuActivity.this, LoginActivity.class);
+//        startActivity(intent[0]);
+//        finish();
+//    }
+//
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if(nfc==null)
+//        {
+//            nfc = NfcAdapter.getDefaultAdapter(this);
+//        }
+//        nfc.disableForegroundDispatch(this);
+//
+//    }
+
+    private void gotoGetStarted(){
+        Intent intent= new Intent(MainMenuActivity.this, GetStarted.class);
+        startActivity(intent);
+    }
     private void goToTripHistoryActivity(){
-        String phone_number=getIntent().getStringExtra("Phone number");
+//        String phone_number=getIntent().getStringExtra("Phone number");
         Intent intent= new Intent(MainMenuActivity.this, TripHistoryActivity.class);
-        intent.putExtra("Phone number", phone_number);
+//        intent.putExtra("Phone number", phone_number);
+//        Toast.makeText(this, "The intent MAINMENU phoneNumber"+phone_number,
+//                Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
     private void goToLocationActivity(){
-
+        
         Intent intent= new Intent(MainMenuActivity.this, MapsActivity.class);
         startActivity(intent);
 
@@ -99,6 +135,8 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent= new Intent(MainMenuActivity.this, CitylinesActivity.class);
         startActivity(intent);
     }
+
+
     private void  goToActivateCardActivity(){
         Intent intent= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
         startActivity(intent);
@@ -117,6 +155,11 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         final Intent[] intent = {null}; // value of the intent is depends on the user selected button option
+//        if(nfc==null)
+//        {
+//            nfc = NfcAdapter.getDefaultAdapter(this);
+//        }
+//        nfc.disableForegroundDispatch(this);
         switch(item.getItemId()){
             case R.id.logout:
                 Toast.makeText(this, "Logged out from account", Toast.LENGTH_LONG).show();
@@ -161,7 +204,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent[0]);
                 return true;
             case R.id.cardActivation:
-                intent[0]= new Intent(MainMenuActivity.this, ActivateCardActivity.class);
+                intent[0]= new Intent(MainMenuActivity.this, InfoActivateCard.class);
                 startActivity(intent[0]);
                 return true;
             default:

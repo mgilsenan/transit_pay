@@ -1,6 +1,7 @@
 package com.example.transitpay;
 
 import android.content.res.Resources;
+import android.nfc.NfcAdapter;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,6 +27,7 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
     this.chargeCallFactory = chargeCallFactory;
     this.resources = resources;
   }
+
 
   @Override
   public CardEntryActivityCommand handleEnteredCardInBackground(CardDetails cardDetails) {

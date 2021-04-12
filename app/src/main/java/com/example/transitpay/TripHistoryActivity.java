@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,12 +36,14 @@ public class TripHistoryActivity extends AppCompatActivity {
     private TripHistoryAdapter adapter;
     private List<Trip> tripList;
     private ImageButton refreshButton;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_history_activity);
-        String phoneNumber = getIntent().getStringExtra("Phone number");
+//        String phoneNumber = getIntent().getStringExtra("Phone number");
+        String phoneNumber=LoginActivity.getUser().getPhone();
         Log.e("PHONE NUMBER", "onCreate: "+phoneNumber);
         tDatabase = FirebaseDatabase.getInstance();
         dbTrip=tDatabase.getReference("user");
@@ -52,27 +55,35 @@ public class TripHistoryActivity extends AppCompatActivity {
         setupUI();
     }
     private void setupUI(){
-
+        swipeRefreshLayout=findViewById(R.id.swipeRef);
         recyclerView = findViewById(R.id.trip_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tripList = new ArrayList<>();
         adapter = new TripHistoryAdapter(this, tripList);
         recyclerView.setAdapter(adapter);
-        refreshButton=findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retrieveTrips();
-            }
-        });
+
+       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               retrieveTrips();
+               adapter.notifyDataSetChanged();
+               swipeRefreshLayout.setRefreshing(false);
+           }
+       });
+//        refreshButton=findViewById(R.id.refreshButton);
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                retrieveTrips();
+//            }
+//        });
 
     }
 
     private void retrieveTrips(){
 
         Query trip = ref.limitToLast(10);
-
         trip.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -86,7 +97,9 @@ public class TripHistoryActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "No Trip history",
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(), " Trip history is not Available.\n" +
+                                    " To see your trip details, take your first trip.",
                             Toast.LENGTH_LONG).show();
                 }
             }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/introImageView"
+        android:layout_width="401dp"
+        android:layout_height="338dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="10dp"
+        app:srcCompat="@drawable/pay_logo" />
+
+    <TextView
+        android:id="@+id/infotextView"
+        android:layout_width="match_parent"
+        android:layout_height="113dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="600dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#7A7676"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/titletextView"
+        android:layout_width="399dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#4F8C51"
+        android:textColorHighlight="#4F8C51"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/transitnametextView"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="false"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="100dp"
+        android:text="TRANSIT PAY"
+        android:textColor="#407B40"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="231dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="35dp"
+        app:srcCompat="@drawable/trainlogo" />
+
+</RelativeLayout>

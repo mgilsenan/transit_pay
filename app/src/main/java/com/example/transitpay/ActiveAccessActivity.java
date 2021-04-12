@@ -18,6 +18,7 @@ public class ActiveAccessActivity extends AppCompatActivity {
     TextView profile;
     Button mainMenuButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class ActiveAccessActivity extends AppCompatActivity {
         });
 
     }
+
 
     protected void displayProfile(){
 
