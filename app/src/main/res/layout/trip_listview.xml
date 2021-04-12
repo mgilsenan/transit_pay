@@ -1,79 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardListview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginLeft="10dp"
+    android:layout_marginEnd="50dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="10dp"
+    android:background="#FFFFFF"
+    android:foregroundGravity="center_horizontal"
+    android:orientation="vertical"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardUseCompatPadding="true">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="91dp"
-        android:padding="8dp">
+        android:layout_height="110dp"
+        android:background="#FFFFFF"
+        android:padding="2dp">
 
 
         <TextView
             android:id="@+id/timeTextView"
-            android:layout_width="79dp"
-            android:layout_height="26dp"
+            android:layout_width="81dp"
+            android:layout_height="35dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="299dp"
-            android:layout_marginLeft="299dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="45dp"
-            android:textStyle="bold"
-            android:text="TextView" />
+            android:layout_marginStart="262dp"
+            android:layout_marginLeft="262dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="67dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dateTextView"
-            android:layout_width="85dp"
-            android:layout_height="25dp"
+            android:layout_width="109dp"
+            android:layout_height="31dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="21dp"
-            android:layout_marginLeft="21dp"
-            android:layout_marginTop="41dp"
-            android:layout_marginEnd="279dp"
-            android:layout_marginRight="279dp"
-            android:layout_marginBottom="17dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="59dp"
+            android:layout_marginEnd="199dp"
+            android:layout_marginRight="199dp"
+            android:layout_marginBottom="18dp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/addressTextView"
-            android:layout_width="142dp"
-            android:layout_height="25dp"
+            android:layout_width="157dp"
+            android:layout_height="33dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="21dp"
-            android:layout_marginLeft="21dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="222dp"
-            android:layout_marginRight="222dp"
-            android:layout_marginBottom="46dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="151dp"
+            android:layout_marginRight="151dp"
+            android:layout_marginBottom="58dp"
             android:text="TextView"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

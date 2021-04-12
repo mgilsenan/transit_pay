@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -33,6 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
     TextView welcome;
     TextInputLayout email, password, name, phone;
     FirebaseAuth fAuth;
+//    String userID;
+    NfcAdapter nfc;
     private static Boolean flag; // if the phone number exists in the database it sets to true
     final static String TAG = "SignUpActivity";
 
@@ -70,7 +73,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         phone = findViewById(R.id.phone);
-
 
     }
 
@@ -140,7 +142,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                                 reference.child(phoneStr).setValue(user);
                                                                 reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
                                                                 reference.child(phoneStr).child("emailVerified").getRef().setValue("FALSE");
-                                                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                //Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                Intent intent = new Intent(SignUpActivity.this, GetStarted.class);
                                                                 startActivity(intent);
                                                                 finish();
                                                             }
@@ -179,7 +182,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
-
 
     private Boolean isNameValid(){
         String nameStr = name.getEditText().getText().toString();

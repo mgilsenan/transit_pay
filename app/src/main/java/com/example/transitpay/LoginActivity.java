@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -98,6 +99,31 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    private void checkFirstTimeUser(String phoneNumber) {
+        reference = FirebaseDatabase.getInstance().getReference("user");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(phoneNumber).child("Valid card").exists()) {
+                    Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, InfoActivateCard.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+
     protected void callSignUpBtnAction(){
         callSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,18 +205,23 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //extract the email and send reset link
                         String mail = resetMail.getText().toString();
-                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                clearUser(); // if the user reset password then user need to login again
-                                Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LoginActivity.this, "Error! Reset Link is Not Sent", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        if(mail.matches("")){
+                            Toast.makeText(LoginActivity.this, "Email cannot be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    clearUser(); // if the user reset password then user need to login again
+                                    Toast.makeText(LoginActivity.this, "Reset Link Sent to Your Email", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(LoginActivity.this, "Error! Reset Link is Not Sent", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
                     }
                 });
                 passwordRestDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -288,10 +319,12 @@ public class LoginActivity extends AppCompatActivity {
                                         String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
 
                                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+
                                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
                                         intent.putExtra("Phone number", phoneNoFromDB);
                                         // save user phone number upon loggin
                                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
+                                        checkFirstTimeUser(phoneNoFromDB);
                                         user.setPassword(userEnteredPassword);
                                         saveUser();
                                         dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");

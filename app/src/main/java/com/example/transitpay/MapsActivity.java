@@ -3,11 +3,11 @@ package com.example.transitpay;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.location.Location;
+//import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
+//import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -195,7 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 map.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(getString(R.string.dropped_pin))
-                        .snippet(snippet)
+//                        .snippet(snippet)
                         .icon(BitmapDescriptorFactory.defaultMarker
                                 (BitmapDescriptorFactory.HUE_ORANGE)).alpha(0.9f));
             }

@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_menu_background"
+    android:background="@drawable/bk_main_page"
     tools:context=".MainMenuActivity">
+
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="283dp"
         android:layout_height="285dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/remainingfare_design_4" />
-
 
     <ImageButton
         android:id="@+id/fareviewchangebtn"
@@ -46,26 +47,86 @@
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
 
+    <!--
+    <ImageView
+        android:layout_width="472dp"
+        android:layout_height="127dp"
+        android:src="@drawable/speed"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-21dp" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="150dp"
+        android:text="Skip the lines &amp;"
+        android:textColor="@color/jungleGreen"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.121"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="150dp"
+        android:text="pay on your phone."
+        android:textColor="@color/jungleGreen"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.101"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="614dp"
+        android:layout_height="145dp"
+        android:src="@drawable/box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/LocationButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="30dp"
         android:text="Location"
+        android:drawableLeft="@drawable/ic_loc"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/citylinesButton"
         app:layout_constraintStart_toStartOf="@+id/citylinesButton" />
 
     <Button
         android:id="@+id/citylinesButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="10dp"
         android:text="City Transit Lines"
+        android:drawableLeft="@drawable/ic_tranist"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:iconTint="#090808"
         app:layout_constraintBottom_toTopOf="@+id/LocationButton"
         app:layout_constraintEnd_toEndOf="@+id/triphistoryButton"
@@ -73,30 +134,39 @@
 
     <Button
         android:id="@+id/triphistoryButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="10dp"
         android:text="Trip history"
+        android:drawableLeft="@drawable/ic_history"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toTopOf="@+id/citylinesButton"
         app:layout_constraintEnd_toEndOf="@+id/purchasefareButton"
         app:layout_constraintStart_toStartOf="@+id/purchasefareButton" />
 
     <Button
         android:id="@+id/purchasefareButton"
-        android:layout_width="210dp"
-        android:layout_height="55dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginTop="300dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Purchase Fare"
+        android:drawableLeft="@drawable/ic_money"
         android:textColor="#050505"
-        app:backgroundTint="#ABF8C539"
+        android:backgroundTint="#ffcd05"
         app:layout_constraintBottom_toTopOf="@+id/triphistoryButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
