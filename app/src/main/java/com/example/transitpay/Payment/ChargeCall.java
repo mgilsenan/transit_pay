@@ -1,7 +1,10 @@
-package com.example.transitpay;
+package com.example.transitpay.Payment;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+
+import com.example.transitpay.BuildConfig;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

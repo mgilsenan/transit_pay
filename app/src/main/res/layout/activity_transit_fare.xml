@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/fares_vector"
-    tools:context=".TransitFareActivity">
+    tools:context=".Payment.TransitFareActivity">
 
 
     <TextView

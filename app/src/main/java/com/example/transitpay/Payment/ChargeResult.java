@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Payment;
 
 public final class ChargeResult {
 

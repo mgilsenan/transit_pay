@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".ExampleApplication"
+        android:name=".Payment.ExampleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,7 +33,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD6quDUmWSIs1V3sDX39nTw2KyVOtlrZTs" />
 
-        <activity android:name=".CheckoutActivity" />
+        <activity android:name=".Payment.CheckoutActivity" />
         <!--
 <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,13 +42,13 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".TransitFareActivity" />
+        <activity android:name=".Payment.TransitFareActivity" />
         <activity android:name=".ActiveAccessActivity" />
         <activity
             android:name=".Authenticate.LoginActivity"
             android:label="login" />
         <activity android:name=".Authenticate.SignUpActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Navigate.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,14 +58,14 @@
 
         <activity
 
-            android:name=".TripHistoryActivity"
+            android:name=".Trip.TripHistoryActivity"
             android:label="Trip History Activity"
             android:parentActivityName=".MainMenuActivity">
 
         </activity>
         <activity
 
-            android:name=".CitylinesActivity"
+            android:name=".Navigate.CitylinesActivity"
             android:parentActivityName=".MainMenuActivity">
 
         </activity>
@@ -91,7 +91,7 @@
         </activity>
         <activity
 
-            android:name=".ActivateCardActivity"
+            android:name=".Payment.ActivateCardActivity"
             android:parentActivityName=".InfoActivateCard">
             <intent-filter>
 
@@ -104,7 +104,7 @@
         </activity>
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Navigate.MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
             <intent-filter>

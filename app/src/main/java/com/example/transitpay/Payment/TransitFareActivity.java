@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Payment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.transitpay.Authenticate.LoginActivity;
 import com.example.transitpay.Model.User;
+import com.example.transitpay.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

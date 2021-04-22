@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Trip;
 
 public class Trip {
     public String Date, Time, Address;

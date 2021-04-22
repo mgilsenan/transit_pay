@@ -1,7 +1,8 @@
-package com.example.transitpay;
+package com.example.transitpay.Payment;
 
 import android.app.Activity;
 import android.app.Application;
+
 import retrofit2.Retrofit;
 import sqip.CardEntry;
 

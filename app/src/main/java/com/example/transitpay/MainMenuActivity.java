@@ -17,6 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.transitpay.Authenticate.LoginActivity;
+import com.example.transitpay.Navigate.CitylinesActivity;
+import com.example.transitpay.Navigate.MapsActivity;
+import com.example.transitpay.Payment.ActivateCardActivity;
+import com.example.transitpay.Payment.TransitFareActivity;
+import com.example.transitpay.Trip.TripHistoryActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

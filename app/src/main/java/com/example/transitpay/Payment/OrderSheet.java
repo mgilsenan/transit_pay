@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Payment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.transitpay.Payment.CheckoutActivity;
+import com.example.transitpay.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
