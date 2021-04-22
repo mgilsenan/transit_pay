@@ -5,7 +5,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ChargeService {
-  @POST("/chargeForCookie")
+  @POST("/chargeTransitUser")
   Call<Void> charge(@Body ChargeRequest request);
 
   class ChargeErrorResponse {
