@@ -166,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void continueBtnAction(){
 
+        Log.d(TAG, "Log in button clicked");
         // @TODO Main display activity
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                     toast = Toast.makeText(LoginActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 } else {
+                    Log.d(TAG, "check User exit " );
                     setUserExist(false);
                     isUser(getUserExist());
                 }
@@ -234,12 +236,13 @@ public class LoginActivity extends AppCompatActivity {
 
     // check valid phone
     private Boolean validatePhone() {
+        Log.d(TAG, "validate phone: ");
         String val = phone.getEditText().getText().toString();
         if (val.isEmpty()) {
             phone.setError("Field cannot be empty");
             Log.d(TAG, "validate phone: " + val);
             return false;
-        } else if(phoneStr.length() != phoneNumLength) {
+        } else if(val.length() != phoneNumLength) {
             phone.setError("phone number should be 10 digits long\n ex.4381109111");
             return false;
         }else {
@@ -250,6 +253,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // check valid password
     private Boolean validatePassword() {
+        Log.d(TAG, "validate password: " );
         String val = password.getEditText().getText().toString();
         if (val.isEmpty()) {
             password.setError("Field cannot be empty");
@@ -276,6 +280,7 @@ public class LoginActivity extends AppCompatActivity {
             phone.getEditText().setText(userEnteredPhone);
             password.getEditText().setText(userEnteredPassword);
         }else{
+            Log.d(TAG,"shared preference is empty");
             userEnteredPhone = phone.getEditText().getText().toString().trim();
             userEnteredPassword = password.getEditText().getText().toString().trim();
         }
