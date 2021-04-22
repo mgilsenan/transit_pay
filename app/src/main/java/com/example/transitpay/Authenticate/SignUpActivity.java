@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Authenticate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.transitpay.GetStarted;
+import com.example.transitpay.R;
+import com.example.transitpay.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,16 +37,14 @@ public class SignUpActivity extends AppCompatActivity {
     TextView welcome;
     TextInputLayout email, password, name, phone;
     FirebaseAuth fAuth;
-//    String userID;
     NfcAdapter nfc;
-    private static Boolean flag; // if the phone number exists in the database it sets to true
     final static String TAG = "SignUpActivity";
 
 
     FirebaseDatabase rootNode;
     DatabaseReference reference;
 
-    private static final int passwordLength = 6;
+    private static final int phoneNumLength = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +77,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+
     public void continueBtnAction(){
         continueBtn.setOnClickListener(new View.OnClickListener() {
             // save user obj in realtime database: phone number is unique user id
-            // if same phone number user info over write
+            // if phone number is taken by other accounts deny
             @Override
             public void onClick(View v) {
 
@@ -88,8 +90,8 @@ public class SignUpActivity extends AppCompatActivity {
                     toast = Toast.makeText(SignUpActivity.this, "Unsuccessful", Toast.LENGTH_LONG);
                     toast.show();
                 }else{
-                    rootNode = FirebaseDatabase.getInstance();
-                    reference = rootNode.getReference("user");
+
+                    reference = FirebaseStrings.getRef();
 
 
                     String nameStr = name.getEditText().getText().toString().trim();
@@ -97,11 +99,10 @@ public class SignUpActivity extends AppCompatActivity {
                     String passwordStr = password.getEditText().getText().toString().trim();
                     String phoneStr = phone.getEditText().getText().toString().trim();
 
-                    Query checkUserPhone = reference.orderByChild("phone").equalTo(phoneStr);
+                    Query checkUserPhone = reference.orderByChild(FirebaseStrings.getFirebasePhone()).equalTo(phoneStr);
 
                     Log.d(TAG, "the phone number entered outside of even listenner"+phoneStr);
-                    phone.setError(null);
-                    email.setError(null);
+
 
                     checkUserPhone.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -116,7 +117,7 @@ public class SignUpActivity extends AppCompatActivity {
                             else{
                                 Log.d(TAG, "the phone number entered is not found"+phoneStr);
 
-                                Query checkUserEmail = reference.orderByChild("email").equalTo(emailStr);
+                                Query checkUserEmail = reference.orderByChild(FirebaseStrings.getFirebaseEmail()).equalTo(emailStr);
                                 checkUserEmail.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -134,15 +135,24 @@ public class SignUpActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if(task.isSuccessful()) {
+                                                                // text field is error free at this point
+                                                                phone.setErrorEnabled(false);
+                                                                email.setErrorEnabled(false);
+                                                                password.setErrorEnabled(false);
+
                                                                 Toast.makeText(SignUpActivity.this, "Request sent, Please Check Your Email for Verification",
                                                                         Toast.LENGTH_LONG).show();
-                                                                User user = new User(nameStr, emailStr, phoneStr);
-                                                                user.setPassword(passwordStr);
 
+                                                                // create local user obj
+                                                                User user = new User(nameStr, emailStr, phoneStr);
+                                                                user.setPassword(passwordStr); // only for debugging purpose
+
+                                                                // create a new user in real time database
                                                                 reference.child(phoneStr).setValue(user);
-                                                                reference.child(phoneStr).child("loginBefore").getRef().setValue("FALSE");
-                                                                reference.child(phoneStr).child("emailVerified").getRef().setValue("FALSE");
-                                                                //Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                reference.child(phoneStr).child(FirebaseStrings.getFirebaseLoginBefore()).getRef().setValue("FALSE");
+                                                                reference.child(phoneStr).child(FirebaseStrings.getGetFirebaseEmailVerified()).getRef().setValue("FALSE");
+
+                                                                // go to next activity
                                                                 Intent intent = new Intent(SignUpActivity.this, GetStarted.class);
                                                                 startActivity(intent);
                                                                 finish();
@@ -210,21 +220,17 @@ public class SignUpActivity extends AppCompatActivity {
         else
         {
             email.setError(null);
-            email.setErrorEnabled(false);
             return true;
         }
     }
 
+
     private Boolean isPasswordValid(){
         String passwordStr = password.getEditText().getText().toString();
         String passwordPattern = "^" +
-                //"(?=.*[0-9])" +         //at least 1 digit
-                //"(?=.*[a-z])" +         //at least 1 lower case letter
-                //"(?=.*[A-Z])" +         //at least 1 upper case letter
                 "(?=.*[a-zA-Z])" +      //any letter
-                // "(?=.*[@#$%^&+=!])" +    //at least 1 special character
                 "(?=\\S+$)" +           //no white spaces
-                ".{6,}" +               //at least 4 characters
+                ".{6,}" +               //at least 6 characters
                 "$";
 
         if (passwordStr.isEmpty()){
@@ -237,7 +243,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         else{
             password.setError(null);
-            password.setErrorEnabled(false);
             return true;
         }
     }
@@ -250,13 +255,17 @@ public class SignUpActivity extends AppCompatActivity {
             phone.setError("Field cannot be empty");
 
             return false;
-        }else{
-//            phone.setError(null);
-//            phone.setErrorEnabled(false);
+        }else if(phoneStr.length() != phoneNumLength) {
+            phone.setError("phone number should be 10 digits long\n ex.4381109111");
+            return false;
+        }else
+        {
+            phone.setError(null);
             return true;
         }
     }
 
+    // text boxes are shared with login activity
     public void loginBtnAction(){
         loginBtn.setOnClickListener(new View.OnClickListener() {
             // go back to login activity

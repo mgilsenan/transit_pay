@@ -1,8 +1,9 @@
 package com.example.transitpay;
 
 import android.content.res.Resources;
-import android.nfc.NfcAdapter;
 
+import com.example.transitpay.Authenticate.LoginActivity;
+import com.example.transitpay.Model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

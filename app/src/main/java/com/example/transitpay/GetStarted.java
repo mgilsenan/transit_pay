@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.transitpay.Authenticate.LoginActivity;
+
 public class GetStarted extends AppCompatActivity {
     Context myContext;
     private ViewPager slideViewPager;

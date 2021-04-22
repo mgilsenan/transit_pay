@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Authenticate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -9,19 +9,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.transitpay.InfoActivateCard;
+import com.example.transitpay.MainMenuActivity;
+import com.example.transitpay.R;
+import com.example.transitpay.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String userPassword = "userPasswordKey";
     private String phoneStr;
     private String passwordStr;
+    private static final int phoneNumLength = 10;
 
 
 
@@ -75,15 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setUp();
 
-//        callSignUpBtnAction();
-//
-//        continueBtnAction();
-
-
-
-
-
-
     }
 
     protected void setUp(){
@@ -91,21 +83,22 @@ public class LoginActivity extends AppCompatActivity {
         callSignUpBtn = findViewById(R.id.signUpBtn);
         continueBtn = findViewById(R.id.loginContinueBtn);
         forgetPasswordBtn=findViewById(R.id.forgetPasswordBtn);
-        //welcome = findViewById(R.id.welcome);
         phone = findViewById(R.id.loginPhone);
         password = findViewById(R.id.loginPassword);
         user = new User();
         fAuth = FirebaseAuth.getInstance();
+        reference = FirebaseStrings.getRef();
 
     }
 
 
+    // New account is taken to Info activity
     private void checkFirstTimeUser(String phoneNumber) {
-        reference = FirebaseDatabase.getInstance().getReference("user");
+//        reference = FirebaseStrings.getRef();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(phoneNumber).child("Valid card").exists()) {
+                if (snapshot.child(phoneNumber).child(FirebaseStrings.getGetFirebaseValidCard()).exists()) {
                     Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
                     startActivity(intent);
 
@@ -124,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    // UI elements shared with Signup
     protected void callSignUpBtnAction(){
         callSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,19 +232,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    // check valid phone
     private Boolean validatePhone() {
         String val = phone.getEditText().getText().toString();
         if (val.isEmpty()) {
             phone.setError("Field cannot be empty");
             Log.d(TAG, "validate phone: " + val);
             return false;
-        } else {
+        } else if(phoneStr.length() != phoneNumLength) {
+            phone.setError("phone number should be 10 digits long\n ex.4381109111");
+            return false;
+        }else {
             phone.setError(null);
-            phone.setErrorEnabled(false);
             return true;
         }
     }
 
+    // check valid password
     private Boolean validatePassword() {
         String val = password.getEditText().getText().toString();
         if (val.isEmpty()) {
@@ -259,16 +257,17 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         } else {
             password.setError(null);
-            password.setErrorEnabled(false);
             return true;
         }
     }
 
+
     private void isUser(boolean existingUser) {
-        //progressBar.setVisibility(View.VISIBLE);
 
         String userEnteredPhone ;
         String userEnteredPassword ;
+
+        // via shared preference
         if(existingUser){
             Log.d(TAG,"existing user checked");
 
@@ -283,8 +282,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG,userEnteredPhone);
         Log.d(TAG,userEnteredPassword);
-        reference = FirebaseDatabase.getInstance().getReference("user");
-        Query checkUser = reference.orderByChild("phone").equalTo(userEnteredPhone);
+
+        Query checkUser = reference.orderByChild(FirebaseStrings.getFirebasePhone()).equalTo(userEnteredPhone);
 
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -292,12 +291,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     //TODO we might change the line below------------------------------------------------------------
-                    String phoneFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+                    String phoneFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebasePhone()).getValue(String.class);
                     if (phoneFromDB.equals(userEnteredPhone)) {
                         //Log.d(TAG, "password Equal " + userEnteredPhone);
 
 
-                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child("email").getValue(String.class).trim();
+                        String emailFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseEmail()).getValue(String.class).trim();
 
                         fAuth.signInWithEmailAndPassword(emailFromDB,userEnteredPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -305,18 +304,20 @@ public class LoginActivity extends AppCompatActivity {
                                 // use the password given by the user and user the email that is stored in the database based on given phone number
                                 // if the password in database does not match with user provided password then fail.
                                 // if the email stored in the authentication match with real time database email then success fully login
-                                if(dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")) Log.d(TAG, "loginBefore");
-                                if(task.isSuccessful() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
-                                    //TODO: If the current user updated email address verification email is not sent by firebase auth
+                                if(dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseLoginBefore()).getValue(String.class).matches("TRUE")) Log.d(TAG, "loginBefore");
+
+                                //If the current user updated email address. But verification email is not sent by firebase auth
+                                if(task.isSuccessful() || dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseLoginBefore()).getValue(String.class).matches("TRUE")){
 
                                     // first time user need to verify the email
-                                    if(fAuth.getCurrentUser().isEmailVerified() || dataSnapshot.child(userEnteredPhone).child("loginBefore").getValue(String.class).matches("TRUE")){
-                                        phone.setError(null);
+                                    if(fAuth.getCurrentUser().isEmailVerified() || dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseLoginBefore()).getValue(String.class).matches("TRUE")){
                                         phone.setErrorEnabled(false);
+                                        password.setErrorEnabled(false);
+
                                         Log.d(TAG, "login success  " + userEnteredPhone);
-//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
-                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
-                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+
+                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseName()).getValue(String.class);
+                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebasePhone()).getValue(String.class);
 
                                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
 
@@ -327,20 +328,19 @@ public class LoginActivity extends AppCompatActivity {
                                         checkFirstTimeUser(phoneNoFromDB);
                                         user.setPassword(userEnteredPassword);
                                         saveUser();
-                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
-                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
-                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseLoginBefore()).getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getGetFirebaseEmailVerified()).getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebasePassword()).getRef().setValue(userEnteredPassword);
                                         startActivity(intent);
                                         finish();
                                     }
-                                    else if (dataSnapshot.child(userEnteredPhone).child("emailVerified").getValue(String.class).matches("TRUE")){
+                                    else if (dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getGetFirebaseEmailVerified()).getValue(String.class).matches("TRUE")){
                                         // if the user changed the email
                                         phone.setError(null);
                                         phone.setErrorEnabled(false);
                                         Log.d(TAG, "login success  " + userEnteredPhone);
-//                                        String uidDB = dataSnapshot.child(userEnteredPhone).child("uid").getValue(String.class);
-                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child("name").getValue(String.class);
-                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child("phone").getValue(String.class);
+                                        String nameFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseName()).getValue(String.class);
+                                        String phoneNoFromDB = dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebasePhone()).getValue(String.class);
 
                                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
@@ -349,9 +349,9 @@ public class LoginActivity extends AppCompatActivity {
                                         user.copy(new User(nameFromDB, emailFromDB, phoneNoFromDB));
                                         user.setPassword(userEnteredPassword);
                                         saveUser();
-                                        dataSnapshot.child(userEnteredPhone).child("loginBefore").getRef().setValue("TRUE");
-                                        dataSnapshot.child(userEnteredPhone).child("emailVerified").getRef().setValue("TRUE");
-                                        dataSnapshot.child(userEnteredPhone).child("password").getRef().setValue(userEnteredPassword);
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebaseLoginBefore()).getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getGetFirebaseEmailVerified()).getRef().setValue("TRUE");
+                                        dataSnapshot.child(userEnteredPhone).child(FirebaseStrings.getFirebasePassword()).getRef().setValue(userEnteredPassword);
                                         startActivity(intent);
                                         finish();
 

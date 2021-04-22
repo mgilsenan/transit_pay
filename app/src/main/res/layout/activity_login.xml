@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".Authenticate.LoginActivity">
 
 
     <LinearLayout
@@ -34,14 +34,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:hint="Phone number">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
                 android:transitionName="@string/phone_number_trans" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -52,6 +52,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:hint="Password"
             app:passwordToggleEnabled="true">
 
@@ -59,8 +61,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
                 android:transitionName="@string/password_trans" />
 
         </com.google.android.material.textfield.TextInputLayout>

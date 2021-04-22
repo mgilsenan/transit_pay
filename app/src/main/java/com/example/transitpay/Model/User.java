@@ -1,8 +1,8 @@
-package com.example.transitpay;
+package com.example.transitpay.Model;
 
 public class User {
     // we no longer save password in real time database because authentication has it
-    String name, email, phone, password;
+    public String name, email, phone, password;
 
     public User() {
         // default;

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputLayout;
+import com.example.transitpay.Authenticate.LoginActivity;
 
 //TODO display user profile in list view.
 public class ActiveAccessActivity extends AppCompatActivity {

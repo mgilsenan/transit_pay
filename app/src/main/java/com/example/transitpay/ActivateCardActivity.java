@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.transitpay.Authenticate.LoginActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,7 @@ public class ActivateCardActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDbRef=mDatabase.getReference("user");
         ref=FirebaseDatabase.getInstance().getReference("user");
-        String phoneNumber =LoginActivity.getUser().getPhone();
+        String phoneNumber = LoginActivity.getUser().getPhone();
         //String phoneNumber_intent = getIntent().getStringExtra("Phone number");
         //String phoneNumber_intent = getIntent().getStringExtra("Phone number");
 //        Toast.makeText(this, "The Activate phoneNumber"+phoneNumber,

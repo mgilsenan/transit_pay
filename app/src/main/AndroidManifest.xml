@@ -45,9 +45,9 @@
         <activity android:name=".TransitFareActivity" />
         <activity android:name=".ActiveAccessActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Authenticate.LoginActivity"
             android:label="login" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".Authenticate.SignUpActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,13 +80,13 @@
         <activity
 
             android:name=".InfoActivateCard"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName=".Authenticate.LoginActivity">
 
         </activity>
         <activity
 
             android:name=".GetStarted"
-            android:parentActivityName=".SignUpActivity">
+            android:parentActivityName=".Authenticate.SignUpActivity">
 
         </activity>
         <activity
