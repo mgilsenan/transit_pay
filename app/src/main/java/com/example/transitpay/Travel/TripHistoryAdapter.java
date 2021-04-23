@@ -1,4 +1,4 @@
-package com.example.transitpay.Trip;
+package com.example.transitpay.Travel;
 
 import android.content.Context;
 import android.view.LayoutInflater;

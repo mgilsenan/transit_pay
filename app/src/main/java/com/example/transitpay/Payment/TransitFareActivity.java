@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.transitpay.Authenticate.LoginActivity;
-import com.example.transitpay.Model.User;
 import com.example.transitpay.R;
+import com.example.transitpay.User.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -2,11 +2,6 @@ package com.example.transitpay.Payment;
 
 import androidx.annotation.Nullable;
 
-import com.example.transitpay.Payment.ChargeCall;
-import com.example.transitpay.Payment.ChargeResult;
-import com.example.transitpay.Payment.CheckoutActivity;
-import com.example.transitpay.Payment.ConfigHelper;
-
 import sqip.Call;
 import sqip.GooglePay;
 import sqip.GooglePayNonceResult;

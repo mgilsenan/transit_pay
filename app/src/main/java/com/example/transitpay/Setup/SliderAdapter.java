@@ -1,11 +1,9 @@
-package com.example.transitpay;
+package com.example.transitpay.Setup;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,8 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.transitpay.R;
 
 public class SliderAdapter extends PagerAdapter {
     Context myContext;

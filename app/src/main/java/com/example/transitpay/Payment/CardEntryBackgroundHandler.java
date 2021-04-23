@@ -3,8 +3,8 @@ package com.example.transitpay.Payment;
 import android.content.res.Resources;
 
 import com.example.transitpay.Authenticate.LoginActivity;
-import com.example.transitpay.Model.User;
 import com.example.transitpay.R;
+import com.example.transitpay.User.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

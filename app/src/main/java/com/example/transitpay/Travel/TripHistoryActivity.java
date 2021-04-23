@@ -1,4 +1,4 @@
-package com.example.transitpay.Trip;
+package com.example.transitpay.Travel;
 
 import android.os.Bundle;
 import android.util.Log;

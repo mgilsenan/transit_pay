@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.transitpay.GetStarted;
+import com.example.transitpay.Setup.GetStarted;
 import com.example.transitpay.R;
-import com.example.transitpay.Model.User;
+import com.example.transitpay.User.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;

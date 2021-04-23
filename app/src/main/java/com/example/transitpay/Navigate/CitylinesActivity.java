@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Navigate;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.transitpay.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class CitylinesActivity extends AppCompatActivity {

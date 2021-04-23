@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.User;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,7 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.transitpay.Authenticate.LoginActivity;
-import com.example.transitpay.Model.User;
+import com.example.transitpay.MainMenuActivity;
+import com.example.transitpay.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;

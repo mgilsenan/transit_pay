@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Setup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.transitpay.Authenticate.LoginActivity;
+import com.example.transitpay.R;
 
 
 public class MainActivity extends AppCompatActivity {

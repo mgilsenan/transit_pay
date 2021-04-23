@@ -1,4 +1,4 @@
-package com.example.transitpay;
+package com.example.transitpay.Setup;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.transitpay.Authenticate.LoginActivity;
+import com.example.transitpay.R;
 
 public class GetStarted extends AppCompatActivity {
     Context myContext;
